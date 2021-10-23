@@ -1,0 +1,18 @@
+body
+{
+    top: -1000px;
+    left: -1000px;
+    width: 2000px;
+    height: 2000px;
+	background-image:
+	url("../Scripts/image/1184370.jpg")left top repeat;
+    z-index: 1;
+    -webkit-animation: infinitescroll 5s linear infinite;
+    -moz-animation: infinitescroll 5s linear infinite;
+    -ms-animation: infinitescroll 5s linear infinite;
+    -o-animation: infinitescroll 5s linear infinite;
+    animation: infinitescroll 5s linear infinite; 
+	
+}
+
+

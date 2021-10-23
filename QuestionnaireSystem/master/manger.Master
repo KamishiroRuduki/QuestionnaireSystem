@@ -1,0 +1,45 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="manger.master.cs" Inherits="QuestionnaireSystem.master.manger" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <script src="../Scripts/decimal.js"></script>
+    <script src="../Scripts/jQuery-min-3.6.0.js"></script>
+    <script src="../Scripts/jquery-ui-1.13.0.custom/jquery-ui.js"></script>
+    <link rel="stylesheet" href="../Scripts/style.css">
+    <link rel="stylesheet" href="../Scripts/css/bootstrap.css">
+    <link rel="stylesheet" href="../Scripts/jquery-ui-1.13.0.custom/jquery-ui.css">
+    <link rel="stylesheet" href="../Scripts/index.css">
+    <script src="../Scripts/js/bootstrap.js"></script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <table>
+                <tr>
+
+                    <td colspan="2">
+                        <h1>後台-問卷管理</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="Top">
+                        <br />                        
+                        <a class="nav-link active" aria-current="page" href="/SystemAdmin/List.aspx">問卷管理</a><br />
+                        <a class="nav-link active" aria-current="page" href="/SystemAdmin/common.aspx">常用問題管理</a><br />
+                    </td>
+                    <td>
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</body>
+</html>

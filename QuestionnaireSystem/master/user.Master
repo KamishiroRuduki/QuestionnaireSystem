@@ -1,0 +1,39 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="user.Master.cs" Inherits="QuestionnaireSystem.master.Site1" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <script src="../Scripts/decimal.js"></script>
+    <script src="../Scripts/jQuery-min-3.6.0.js"></script>
+    <script src="../Scripts/jquery-ui-1.13.0.custom/jquery-ui.js"></script>
+    <link rel="stylesheet" href="../Scripts/style.css">
+    <link rel="stylesheet" href="../Scripts/css/bootstrap.css">
+    <link rel="stylesheet" href="../Scripts/index.css">
+    <script src="../Scripts/js/bootstrap.js"></script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <h1>前台</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+    </form>
+</body>
+</html>
