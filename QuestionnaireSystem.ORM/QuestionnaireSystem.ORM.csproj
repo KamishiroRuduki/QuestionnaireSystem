@@ -57,6 +57,7 @@
     <Compile Include="DBModels\Person.cs" />
     <Compile Include="DBModels\Question.cs" />
     <Compile Include="DBModels\Questionnaire.cs" />
+    <Compile Include="DBModels\Static.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

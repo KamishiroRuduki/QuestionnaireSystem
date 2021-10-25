@@ -11,37 +11,29 @@ namespace QuestionnaireSystem.ORM.DBModels
     {
         public int ID { get; set; }
 
+        public Guid QuestionnaireID { get; set; }
+
         public Guid QuestionID { get; set; }
 
-        [StringLength(50)]
-        public string Option1 { get; set; }
+        public int? Option1 { get; set; }
 
-        [StringLength(50)]
-        public string Option2 { get; set; }
+        public int? Option2 { get; set; }
 
-        [StringLength(50)]
-        public string Option3 { get; set; }
+        public int? Option3 { get; set; }
 
-        [StringLength(50)]
-        public string Option4 { get; set; }
+        public int? Option4 { get; set; }
 
-        [StringLength(50)]
-        public string Option5 { get; set; }
+        public int? Option5 { get; set; }
 
-        [StringLength(50)]
-        public string Option6 { get; set; }
+        public int? Option6 { get; set; }
 
-        [StringLength(50)]
-        public string Option7 { get; set; }
+        public int? Option7 { get; set; }
 
-        [StringLength(50)]
-        public string Option8 { get; set; }
+        public int? Option8 { get; set; }
 
-        [StringLength(50)]
-        public string Option9 { get; set; }
+        public int? Option9 { get; set; }
 
-        [StringLength(50)]
-        public string Option10 { get; set; }
+        public int? Option10 { get; set; }
 
         public int OptionAll { get; set; }
     }

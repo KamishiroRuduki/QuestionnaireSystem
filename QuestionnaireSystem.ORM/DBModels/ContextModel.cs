@@ -18,6 +18,7 @@ namespace QuestionnaireSystem.ORM.DBModels
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<Questionnaire> Questionnaires { get; set; }
+        public virtual DbSet<Static> Statics { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

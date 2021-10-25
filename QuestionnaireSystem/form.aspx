@@ -27,7 +27,7 @@
         $(function () {
 
             var ID = getArgs("ID");
-            var strURL = "http://localhost:2305/Handlers/QuestionHandler.ashx?QuestionnaireID=" + ID;
+            var strURL = "/Handlers/QuestionHandler.ashx?QuestionnaireID=" + ID;
             $.ajax({
                 url: strURL,
                 type: "GET",
@@ -68,7 +68,7 @@
         });
         $(document).ready(function () {
             var ID = getArgs("ID");
-            var strURL = "http://localhost:2305/Handlers/QuestionHandler.ashx?QuestionnaireID=" + ID;
+            var strURL = "/Handlers/QuestionHandler.ashx?QuestionnaireID=" + ID;
             var test = "<%=Session["Answer"] %>";
             if (test != "" && test != null) {
                 var testarr = test.split(';');
@@ -136,7 +136,8 @@
         <div id="main">
         </div>
         <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" />
-        <asp:Button ID="btnSubmit" runat="server" Text="送出" OnClick="btnSubmit_Click" />
+        <asp:Button ID="btnSubmit" runat="server" Text="送出" OnClick="btnSubmit_Click" /><br/>
+        <asp:Literal ID="ltMsg" runat="server"></asp:Literal>
         <asp:HiddenField ID="HFID" runat="server" />
     </div>
 </asp:Content>

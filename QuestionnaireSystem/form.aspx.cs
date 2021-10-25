@@ -43,22 +43,7 @@ namespace QuestionnaireSystem
                         }
                         
                     }
-                    if (HttpContext.Current.Session["Name"] != null)
-                    {
-                        this.txtName.Text = HttpContext.Current.Session["Name"].ToString();
-                    }
-                    if (HttpContext.Current.Session["Phone"] != null)
-                    {
-                        this.txtPhone.Text = HttpContext.Current.Session["Phone"].ToString();
-                    }
-                    if (HttpContext.Current.Session["Email"] != null)
-                    {
-                        this.txtEmail.Text = HttpContext.Current.Session["Email"].ToString();
-                    }
-                    if (HttpContext.Current.Session["Age"] != null)
-                    {
-                        this.txtAge.Text = HttpContext.Current.Session["Age"].ToString();
-                    }
+
 
                 }
                 else
@@ -68,12 +53,34 @@ namespace QuestionnaireSystem
                 }
 
             }
+            if (HttpContext.Current.Session["Name"] != null)
+            {
+                this.txtName.Text = HttpContext.Current.Session["Name"] as string;
             }
+            if (HttpContext.Current.Session["Phone"] != null)
+            {
+                this.txtPhone.Text = HttpContext.Current.Session["Phone"] as string;
+            }
+            if (HttpContext.Current.Session["Email"] != null)
+            {
+                this.txtEmail.Text = HttpContext.Current.Session["Email"] as string;
+            }
+            if (HttpContext.Current.Session["Age"] != null)
+            {
+                this.txtAge.Text = HttpContext.Current.Session["Age"] as string;
+            }
+        }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+
+            
             string idtext = this.Request.QueryString["ID"];
             var list2 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
+            string name = this.txtName.Text;
+            string email = this.txtEmail.Text;
+            string phone = this.txtPhone.Text;
+            string age = this.txtAge.Text;
             string[] arr = new string[100];
             string anwser = string.Empty;
             for( int i = 0; i<list2.Count; i++)
@@ -92,11 +99,21 @@ namespace QuestionnaireSystem
                     anwser += ";";
                 }
             }
-            HttpContext.Current.Session["Name"] = this.txtName.Text;
-            HttpContext.Current.Session["Email"] = this.txtEmail.Text;
-            HttpContext.Current.Session["Phone"] = this.txtPhone.Text;
-            HttpContext.Current.Session["Age"] = this.txtAge.Text;
+
+            if(!string.IsNullOrWhiteSpace(name))
+                HttpContext.Current.Session["Name"] = name;
+            if (!string.IsNullOrWhiteSpace(email))
+                HttpContext.Current.Session["Email"] = email;
+            if (!string.IsNullOrWhiteSpace(phone))
+                HttpContext.Current.Session["Phone"] = phone;
+            if (!string.IsNullOrWhiteSpace(age))
+                HttpContext.Current.Session["Age"] = age;
             HttpContext.Current.Session["Answer"] = anwser;
+            if (string.IsNullOrWhiteSpace(this.txtName.Text) || string.IsNullOrWhiteSpace(this.txtEmail.Text) || string.IsNullOrWhiteSpace(this.txtPhone.Text) || string.IsNullOrWhiteSpace(this.txtAge.Text))
+            {
+                this.ltMsg.Text = "姓名或Email或電話或年齡有漏填";
+                return;
+            }
             Response.Redirect("/confirm.aspx?ID=" + idtext); 
         }
 

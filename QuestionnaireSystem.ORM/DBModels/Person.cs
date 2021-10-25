@@ -28,5 +28,7 @@ namespace QuestionnaireSystem.ORM.DBModels
         [Required]
         [StringLength(3)]
         public string Age { get; set; }
+
+        public DateTime CreateDate { get; set; }
     }
 }

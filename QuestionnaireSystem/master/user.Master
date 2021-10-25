@@ -11,6 +11,8 @@
     <script src="../Scripts/decimal.js"></script>
     <script src="../Scripts/jQuery-min-3.6.0.js"></script>
     <script src="../Scripts/jquery-ui-1.13.0.custom/jquery-ui.js"></script>
+    <script language="javascript" type="text/javascript" src="jquery.jqplot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="jquery.jqplot.css" />
     <link rel="stylesheet" href="../Scripts/style.css">
     <link rel="stylesheet" href="../Scripts/css/bootstrap.css">
     <link rel="stylesheet" href="../Scripts/index.css">

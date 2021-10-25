@@ -96,6 +96,15 @@ namespace QuestionnaireSystem
         protected global::System.Web.UI.WebControls.Button btnSubmit;
 
         /// <summary>
+        /// ltMsg コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMsg;
+
+        /// <summary>
         /// HFID コントロール。
         /// </summary>
         /// <remarks>

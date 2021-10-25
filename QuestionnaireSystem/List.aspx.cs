@@ -23,5 +23,11 @@ namespace QuestionnaireSystem
                 }
             }
         }
+
+        protected void QuestionnaireView_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            QuestionnaireView.PageIndex = e.NewPageIndex;
+            this.QuestionnaireView.DataBind();
+        }
     }
 }

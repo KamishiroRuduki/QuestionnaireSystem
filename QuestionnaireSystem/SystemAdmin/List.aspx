@@ -9,7 +9,7 @@
    </div><br/>
     
     <div>
-        <asp:GridView ID="QuestionnaireView" runat="server" AutoGenerateColumns="False" CellPadding="10">
+        <asp:GridView ID="QuestionnaireView" runat="server" AutoGenerateColumns="False" CellPadding="10" AllowPaging="True" OnPageIndexChanging="QuestionnaireView_PageIndexChanging">
             <Columns>
                 <asp:BoundField DataField="ID" HeaderText="#" />
                 <asp:HyperLinkField DataNavigateUrlFields="QuestionnaireID" DataNavigateUrlFormatString="\SystemAdmin\Detail.aspx?ID={0}" DataTextField="Title" HeaderText="問卷" />
