@@ -29,5 +29,10 @@ namespace QuestionnaireSystem.SystemAdmin
             QuestionnaireView.PageIndex = e.NewPageIndex;
             this.QuestionnaireView.DataBind();
         }
+
+        protected void QuestionnaireView_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+
+        }
     }
 }

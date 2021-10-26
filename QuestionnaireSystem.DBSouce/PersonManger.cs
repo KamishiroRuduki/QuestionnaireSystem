@@ -47,5 +47,61 @@ namespace QuestionnaireSystem.DBSouce
                 return null;
             }
         }
+
+        public static bool IsMailCreated(string email)
+        {
+
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.People
+                         where item.Email == email
+                         select item);
+
+                    var list = query.FirstOrDefault();
+                    if (list is null)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return false;
+            }
+        }
+        /// <summary>
+        /// 判斷此手機是否已經被使用
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public static bool IsPhoneCreated(string phone)
+        {
+
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.People
+                         where item.Phone == phone
+                         select item);
+
+                    var list = query.FirstOrDefault();
+                    if (list is null)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return false;
+            }
+        }
     }
 }

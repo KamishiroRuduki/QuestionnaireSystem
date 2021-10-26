@@ -12,14 +12,13 @@
         <div id ="staticTotal">
             <asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
         </div>
-         <asp:Chart runat="server" ID="ctl00" Height="163px" Width="382px">
-             <series>
+<%--         <asp:Chart ID="Chart1" runat="server" Height="328px" Width="341px">
+             <Series>
                  <asp:Series Name="Series1" ChartType="Pie"></asp:Series>
-             </series>
-             <chartareas>
+             </Series>
+             <ChartAreas>
                  <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
-             </chartareas>
-         </asp:Chart>
-        
+             </ChartAreas>
+         </asp:Chart>--%>
     </div>
 </asp:Content>

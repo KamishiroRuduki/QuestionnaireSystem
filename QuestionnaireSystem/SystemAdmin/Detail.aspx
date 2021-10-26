@@ -21,14 +21,14 @@
             <br />
             描述內容&nbsp&nbsp<asp:TextBox ID="txtCaption" runat="server" Height="114px" Width="380px"></asp:TextBox><br />
             <br />
-            開始時間&nbsp&nbsp<asp:TextBox ID="txtStartTime" runat="server" Width="380px"></asp:TextBox><br />
+            開始時間&nbsp&nbsp<asp:TextBox ID="txtStartTime" TextMode="Date" runat="server" Width="380px"></asp:TextBox><br />
             <br />
-            結束時間&nbsp&nbsp<asp:TextBox ID="txtEndTime" runat="server" Width="380px"></asp:TextBox><br />
+            結束時間&nbsp&nbsp<asp:TextBox ID="txtEndTime" TextMode="Date" runat="server" Width="380px"></asp:TextBox><br />
             <br />
             <asp:CheckBox ID="CheckBox1" runat="server" OnCheckedChanged="CheckBox1_CheckedChanged" />
             已啟用
             <br />
-            <asp:Button ID="btnCanceltab1" runat="server" Text="取消" /><asp:Button ID="btnSubmittab1" runat="server" Text="送出" />
+            <asp:Button ID="btnCanceltab1" runat="server" Text="取消" /><asp:Button ID="btnSubmittab1" runat="server" Text="送出" OnClick="btnSubmittab1_Click" />
         </div>
         <div id="tabs-2">
             <div>
@@ -46,7 +46,7 @@
                 <asp:CheckBox ID="CheckBox2" runat="server" />必填
                 <br />
                 回答&nbsp<asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>&nbsp&nbsp&nbsp&nbsp&nbsp
-                <asp:Button ID="btnAdd" runat="server" Text="加入" /><br />
+                <asp:Button ID="btnAdd" runat="server" Text="加入" OnClick="btnAdd_Click" /><br />
             </div>
             <div>
                 <asp:GridView ID="QusetionView" runat="server" OnRowDataBound="QusetionView_RowDataBound" AutoGenerateColumns="False" CellPadding="10">

@@ -15,7 +15,7 @@
                 <asp:HyperLinkField DataNavigateUrlFields="QuestionnaireID" DataNavigateUrlFormatString="\SystemAdmin\Detail.aspx?ID={0}" DataTextField="Title" HeaderText="問卷" />
                 <asp:TemplateField HeaderText="狀態">
                     <ItemTemplate>
-                        <%# ((int)Eval("State") == 0) ? "開放" : "已關閉" %>
+                        <%# ((int)Eval("State") == 0) ? "已關閉" : "開放" %>
                     </ItemTemplate>
                 </asp:TemplateField>
                 

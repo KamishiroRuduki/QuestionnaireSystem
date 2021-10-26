@@ -9,13 +9,19 @@
    </div><br/>
     
     <div>
-        <asp:GridView ID="QuestionnaireView" runat="server" AutoGenerateColumns="False" CellPadding="10" AllowPaging="True" OnPageIndexChanging="QuestionnaireView_PageIndexChanging">
+        <asp:GridView ID="QuestionnaireView" runat="server" AutoGenerateColumns="False" CellPadding="10" AllowPaging="True" OnPageIndexChanging="QuestionnaireView_PageIndexChanging" OnRowDataBound="QuestionnaireView_RowDataBound">
             <Columns>
                 <asp:BoundField DataField="ID" HeaderText="#" />
-                <asp:HyperLinkField DataNavigateUrlFields="QuestionnaireID" DataNavigateUrlFormatString="\Form.aspx?ID={0}" DataTextField="Title" HeaderText="問卷" />
+               <asp:TemplateField HeaderText="問卷">
+                    <ItemTemplate>
+                        <asp:Label ID="lblFormTitle" runat="server" Text="Label"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+              <%--  <asp:HyperLinkField DataNavigateUrlFields="QuestionnaireID" DataNavigateUrlFormatString="\Form.aspx?ID={0}" DataTextField="Title" HeaderText="問卷" />--%>
                 <asp:TemplateField HeaderText="狀態">
                     <ItemTemplate>
-                        <%# ((int)Eval("State") == 0) ? "已完結" : "投票中" %>
+                       <%--  <%# ((int)Eval("State") == 0) ? "開放" : "已關閉" %> --%>
+                        <asp:Label ID="lblFormState" runat="server" Text="Label"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
                 

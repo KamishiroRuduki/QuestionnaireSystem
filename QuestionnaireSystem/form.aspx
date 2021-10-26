@@ -10,7 +10,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <script>
-        function getArgs(strParame) {
+        function getArgs(strParame) { //抓Request.QueryString用
             var args = new Object();
             var query = location.search.substring(1); // Get query string
             var pairs = query.split("&"); // Break at ampersand
@@ -26,8 +26,8 @@
         }
         $(function () {
 
-            var ID = getArgs("ID");
-            var strURL = "/Handlers/QuestionHandler.ashx?QuestionnaireID=" + ID;
+            var ID = getArgs("ID"); //從Request.QueryString取得問卷ID
+            var strURL = "/Handlers/QuestionHandler.ashx?QuestionnaireID=" + ID; //用AJAX取得該問卷的所有問題的資料
             $.ajax({
                 url: strURL,
                 type: "GET",
@@ -35,43 +35,44 @@
                 success: function (result) {
                     for (var i = 0; i < result.length; i++) {
                         var obj = result[i];
-                        var htmltext = `<div"><br/><p>${i + 1}.${obj.Name}`;
+                        var htmltext = `<div"><br/><p>${i + 1}.${obj.Name}`;//第幾題跟題目名
 
                         if (obj.IsMust) {
                             htmltext += `(必填)</p>`;
                         }
                         else
                             htmltext += `</p>`;
-                        if (obj.Type == 0) {
-                            var optionArr = obj.QusetionOption.split(';');
-                            for (var j = 0; j < optionArr.length; j++) {
-                                htmltext += `<input type="radio" ID="${i}" name="${obj.ID}" value = ${optionArr[j]} />${optionArr[j]}`;
+                        if (obj.Type == 0) {        //單選方塊，用radio button
+                            var optionArr = obj.QusetionOption.split(';'); //字串分割
+                            for (var j = 0; j < optionArr.length; j++) { //把所有選項都建出來
+                                htmltext += `<input type="radio" ID="${i}" name="${obj.ID}" value = ${optionArr[j]} />${optionArr[j]}`; //同一個問題裡選項的radio button的name要相同
                             }
 
                         }
-                        else if (obj.Type == 1) {
-                            var optionArr = obj.QusetionOption.split(';');
-                            for (var j = 0; j < optionArr.length; j++)
+                        else if (obj.Type == 1) {  //複選方塊，用check box
+                            var optionArr = obj.QusetionOption.split(';');//字串分割
+                            for (var j = 0; j < optionArr.length; j++)  //把所有選項都建出來
                                 htmltext += `<input type="checkbox" ID="${optionArr[j]}" name="${obj.ID}" value =${optionArr[j]} />${optionArr[j]}`;
+                            //同一個問題裡選項的check box的name要相同
                         }
                         else {
-                            htmltext += `<input type="Text" ID="${i}" name="${obj.ID}" />`;
+                            htmltext += `<input type="Text" ID="${i}" name="${obj.ID}" />`; //文字方塊(數字、mail、日期格式的我還沒處理)
                         }
 
                         htmltext += `<br /></div >`;
-                        $("#main").append(htmltext);
+                        $("#main").append(htmltext);//結束這一題的區塊，並放進建好的div內
                     }
 
                 }
             });
 
         });
-        $(document).ready(function () {
+        $(document).ready(function () { //session資料回填用，ready是等整個頁面跑完才執行此function
             var ID = getArgs("ID");
             var strURL = "/Handlers/QuestionHandler.ashx?QuestionnaireID=" + ID;
-            var test = "<%=Session["Answer"] %>";
-            if (test != "" && test != null) {
-                var testarr = test.split(';');
+            var test = "<%=Session["Answer"] %>"; //抓出作答者存在session的回答資料
+            if (test != "" && test != null) {//如果不為空或NULL才做回填的動作
+                var testarr = test.split(';');//答案的字串做分割
                 $.ajax({
                     url: strURL,
                     type: "GET",
@@ -79,21 +80,21 @@
                     success: function (result) {
                         for (var i = 0; i < result.length; i++) {
                             var obj = result[i];
-                            if (obj.Type == 0) {
+                            if (obj.Type == 0) { //單選方塊，radio button
                                 if (testarr[i] != " ")
-                                    $("input[name=" + obj.ID + "][value=" + testarr[i] + "]").prop("checked", true);
+                                    $("input[name=" + obj.ID + "][value=" + testarr[i] + "]").prop("checked", true);//用問題ID找到radio button，再把value符合的選項勾選
 
                             }
-                            else if (obj.Type == 1) {
+                            else if (obj.Type == 1) { //單選方塊，check box
                                 if (testarr[i] != " ") {
-                                    var optionarr = testarr[i].split(',');
+                                    var optionarr = testarr[i].split(','); //複數選項的關係，要把該題的答案做分割
                                     // $('input:checkbox:first').attr("checked", 'checked');
                                     //$("input[name=" + obj.ID + "]").attr("checked", true);
                                     for (var j = 0; j < optionarr.length; j++) {
                                         //  $("input:checkbox:[value=" + optionarr[j] + "]").attr("checked", 'checked');
                                         //$("input:checkbox[value=" + optionarr[j] + "]").prop("checked", true);
                                         // $("input[name=" + obj.ID + "][value=" + optionarr[j] + "]").attr("checked", true);
-                                        $("#" + optionarr[j]).prop("checked", true);
+                                        $("#" + optionarr[j]).prop("checked", true); // 用ID去找到符合答案的選項並勾選(建立check box時我有把答案的值放到ID，所以可以這樣找)
 
                                     }
                                 }
@@ -103,7 +104,7 @@
                                 //$("#" + i).val("testt");
                                 //$("#4").val("testt");
                                 //var testt = testarr[i];
-                                $("input[name=" + obj.ID + "]").val(testarr[i]);
+                                $("input[name=" + obj.ID + "]").val(testarr[i]);//用name找到文字方塊，並把值填入
                                // $("#4").attr("value", "123");
                             }
                         }

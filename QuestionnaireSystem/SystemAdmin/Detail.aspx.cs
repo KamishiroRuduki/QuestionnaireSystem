@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -21,36 +22,46 @@ namespace QuestionnaireSystem.SystemAdmin
                     string idtext = this.Request.QueryString["ID"];
                     var list = QuestionnaireManger.GETQuestionnaire(idtext.ToGuid());
                     var list2 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
-                    if(list != null)
+                    if (list != null)
                     {
                         txtTitle.Text = list.Title;
                         txtCaption.Text = list.Caption;
                         if (list.StartTime != null)
                         {
                             DateTime start = (DateTime)list.StartTime;
-                            txtStartTime.Text = start.ToString("yyyy/MM/dd");
+                            txtStartTime.Text = start.ToString("yyyy-MM-dd");
+                            //  txtStartTime.Text = start;
                         }
                         if (list.EndTime != null)
                         {
                             DateTime end = (DateTime)list.EndTime;
-                            txtEndTime.Text = end.ToString("yyyy/MM/dd");
+                            txtEndTime.Text = end.ToString("yyyy-MM-dd");
                         }
-                        if( list.State == 1)
+                        if (list.State == 1)
                         {
                             CheckBox1.Checked = true;
                         }
                     }
-                    if(list2 != null)
+                    if (list2 != null)
                     {
-                        this.QusetionView.DataSource = list2;
-                        this.QusetionView.DataBind();
+                        if (HttpContext.Current.Session["QusetionList"] == null)
+                        {
+                            this.QusetionView.DataSource = list2;
+                            this.QusetionView.DataBind();
+                        }
+                        else
+                        {
+                            var list3 = HttpContext.Current.Session["QusetionList"];
+                            this.QusetionView.DataSource = list3;
+                            this.QusetionView.DataBind();
+                        }
                     }
 
                 }
                 else
                 {
-                    
-                   
+
+
                 }
             }
         }
@@ -97,6 +108,51 @@ namespace QuestionnaireSystem.SystemAdmin
                     lbl.Text = "文字方塊(日期)";
                 }
             }
+        }
+
+        protected void btnAdd_Click(object sender, EventArgs e)
+        {
+
+            string idtext = this.Request.QueryString["ID"];
+            List<Question> list3 = new List<Question>();
+            if(HttpContext.Current.Session["QusetionList"] == null)
+            {
+                 list3 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
+            }
+            else
+            {
+                 list3 = (List<Question>)HttpContext.Current.Session["QusetionList"];
+            }
+            
+            int number = list3.Count;
+            int type = Convert.ToInt32(this.TypeDDList.SelectedValue);
+            Question newQuestion = new Question()
+            {
+                QuestionnaireID = (idtext).ToGuid(),
+                ID = Guid.NewGuid(),
+                Number = number + 1,
+                Type = type,
+                Name = txtQusetion.Text
+            };
+            if (this.CheckBox2.Checked)
+                newQuestion.IsMust = true;
+            else
+                newQuestion.IsMust = false;
+            if (type == 0 || type == 1)
+            {
+                newQuestion.QusetionOption = txtAnswer.Text;
+            }
+            list3.Add(newQuestion);
+            
+            HttpContext.Current.Session["QusetionList"] = list3;
+
+            Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
+
+        }
+
+        protected void btnSubmittab1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

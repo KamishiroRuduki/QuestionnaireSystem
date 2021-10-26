@@ -53,6 +53,7 @@ namespace QuestionnaireSystem
                 }
 
             }
+            //檢查姓名、mail、電話、年齡有沒有session資料，有就做回填的動作
             if (HttpContext.Current.Session["Name"] != null)
             {
                 this.txtName.Text = HttpContext.Current.Session["Name"] as string;
@@ -81,25 +82,25 @@ namespace QuestionnaireSystem
             string email = this.txtEmail.Text;
             string phone = this.txtPhone.Text;
             string age = this.txtAge.Text;
-            string[] arr = new string[100];
-            string anwser = string.Empty;
+            string[] arr = new string[100];//測試用陣列不用理它
+            string anwser = string.Empty;//放回答用
             for( int i = 0; i<list2.Count; i++)
             {
                 if(this.Request.Form[list2[i].ID.ToString()] == null)
                 {
-                    arr[i] = " ";
-                    anwser += " ";
-                    anwser += ";";
+                    arr[i] = " ";//測試用不用理它
+                    anwser += " ";//假如該題未填，此題答案給它一格空格
+                    anwser += ";";//答案分割用
                 }
                 else {
-                    arr[i] = this.Request.Form[list2[i].ID.ToString()];
+                    arr[i] = this.Request.Form[list2[i].ID.ToString()];//測試用不用理它
                     //  HttpContext.Current.Session[list2[i].ID.ToString()] = this.Request.Form[list2[i].ID.ToString()];
-                    anwser += this.Request.Form[list2[i].ID.ToString()];
-                    if(i < list2.Count-1)
+                    anwser += this.Request.Form[list2[i].ID.ToString()];//Request.Form是抓前端控制項輸入的值，[]內要用給你要抓的控制項的name，我的話是用問題的ID
+                    if (i < list2.Count-1)//最後一題不放分號
                     anwser += ";";
                 }
             }
-
+            //按下送出，把資料暫存至session
             if(!string.IsNullOrWhiteSpace(name))
                 HttpContext.Current.Session["Name"] = name;
             if (!string.IsNullOrWhiteSpace(email))
@@ -109,15 +110,27 @@ namespace QuestionnaireSystem
             if (!string.IsNullOrWhiteSpace(age))
                 HttpContext.Current.Session["Age"] = age;
             HttpContext.Current.Session["Answer"] = anwser;
+
+            //檢查是否有漏填，必填選項的檢查我還沒做
             if (string.IsNullOrWhiteSpace(this.txtName.Text) || string.IsNullOrWhiteSpace(this.txtEmail.Text) || string.IsNullOrWhiteSpace(this.txtPhone.Text) || string.IsNullOrWhiteSpace(this.txtAge.Text))
             {
-                this.ltMsg.Text = "姓名或Email或電話或年齡有漏填";
+                this.ltMsg.Text += "姓名或Email或電話或年齡有漏填<br/>";
                 return;
             }
-            Response.Redirect("/confirm.aspx?ID=" + idtext); 
+            if (!PersonManger.IsMailCreated(email))
+            {
+                this.ltMsg.Text += "此信箱已經被使用過了<br/>";
+                return;
+            }
+            if (!PersonManger.IsPhoneCreated(phone))
+            {
+                this.ltMsg.Text = "此手機已經被使用過了<br/>";
+                return;
+            }
+            Response.Redirect("/confirm.aspx?ID=" + idtext); //跳至確認頁
         }
 
-        protected void btnCancel_Click(object sender, EventArgs e)
+        protected void btnCancel_Click(object sender, EventArgs e)//按取消跳回list頁前，先把session資料清除
         {
             HttpContext.Current.Session["Name"] = null;
             HttpContext.Current.Session["Email"] = null;
