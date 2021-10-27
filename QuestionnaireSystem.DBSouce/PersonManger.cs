@@ -90,7 +90,7 @@ namespace QuestionnaireSystem.DBSouce
                 return null;
             }
         }
-        public static bool IsMailCreated(string email)
+        public static bool IsMailCreated(string email, Guid questionnaireid)
         {
 
             try
@@ -99,7 +99,7 @@ namespace QuestionnaireSystem.DBSouce
                 {
                     var query =
                         (from item in context.People
-                         where item.Email == email
+                         where item.Email == email && item.QuestionnaireID == questionnaireid
                          select item);
 
                     var list = query.FirstOrDefault();
@@ -120,7 +120,7 @@ namespace QuestionnaireSystem.DBSouce
         /// </summary>
         /// <param name="phone"></param>
         /// <returns></returns>
-        public static bool IsPhoneCreated(string phone)
+        public static bool IsPhoneCreated(string phone, Guid questionnaireid)
         {
 
             try
@@ -129,7 +129,7 @@ namespace QuestionnaireSystem.DBSouce
                 {
                     var query =
                         (from item in context.People
-                         where item.Phone == phone
+                         where item.Phone == phone && item.QuestionnaireID == questionnaireid
                          select item);
 
                     var list = query.FirstOrDefault();

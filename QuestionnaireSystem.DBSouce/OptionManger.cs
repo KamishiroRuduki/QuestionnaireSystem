@@ -75,7 +75,7 @@ namespace QuestionnaireSystem.DBSouce
             }
         }
 
-        public static void DeleteOption(Guid quesid)
+        public static void DeleteOption(Guid quesid, Guid questionnaireid)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace QuestionnaireSystem.DBSouce
                 {
                     var query =
                         (from item in context.Statics
-                         where item.QuestionID == quesid
+                         where item.QuestionID == quesid && item.QuestionnaireID == questionnaireid
                          select item).ToList();
                     
                     if (query != null)

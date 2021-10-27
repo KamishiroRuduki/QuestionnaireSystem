@@ -36,7 +36,7 @@ namespace QuestionnaireSystem
                             DateTime end = (DateTime)list.EndTime;
                             this.litDate.Text += end.ToString("yyyy/MM/dd");
                         }
-                        this.litTitle.Text = list.Title;
+                        this.lblTitle.Text = list.Title;
                         if(list.Caption != null)
                         {
                             this.litCaption.Text = list.Caption;
@@ -117,12 +117,12 @@ namespace QuestionnaireSystem
                 this.ltMsg.Text += "姓名或Email或電話或年齡有漏填<br/>";
                 return;
             }
-            if (!PersonManger.IsMailCreated(email))
+            if (!PersonManger.IsMailCreated(email, idtext.ToGuid()))
             {
                 this.ltMsg.Text += "此信箱已經被使用過了<br/>";
                 return;
             }
-            if (!PersonManger.IsPhoneCreated(phone))
+            if (!PersonManger.IsPhoneCreated(phone, idtext.ToGuid()))
             {
                 this.ltMsg.Text = "此手機已經被使用過了<br/>";
                 return;

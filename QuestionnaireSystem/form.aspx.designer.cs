@@ -24,13 +24,13 @@ namespace QuestionnaireSystem
         protected global::System.Web.UI.WebControls.Literal litDate;
 
         /// <summary>
-        /// litTitle コントロール。
+        /// lblTitle コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litTitle;
+        protected global::System.Web.UI.WebControls.Label lblTitle;
 
         /// <summary>
         /// litCaption コントロール。

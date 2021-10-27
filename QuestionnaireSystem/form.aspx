@@ -6,6 +6,9 @@
             display: flex;
             justify-content: end;
         }
+        .auto-style1 {
+            width: 791px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -120,11 +123,13 @@
     </div>
 
     <div class="entry-content" style="padding-left: 300px;">
-        <div>
-            <asp:Literal ID="litTitle" runat="server"></asp:Literal><br />
+        <div class="auto-style1;jumbotron text-center" >
+            <asp:Label ID="lblTitle" runat="server" style="font-size: 20px;font-weight:bold" ></asp:Label><br />
             <asp:Literal ID="litCaption" runat="server"></asp:Literal><br />
             <br />
             <br />
+           </div>
+        <div>
             姓名&nbsp&nbsp<asp:TextBox ID="txtName" runat="server"></asp:TextBox><br />
             <br />
             手機&nbsp&nbsp<asp:TextBox ID="txtPhone" runat="server"></asp:TextBox><br />

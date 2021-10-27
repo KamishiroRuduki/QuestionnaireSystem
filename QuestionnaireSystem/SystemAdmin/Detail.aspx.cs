@@ -196,7 +196,11 @@ namespace QuestionnaireSystem.SystemAdmin
                 }
             }
         }
-
+        /// <summary>
+        /// 問題新增或編輯
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnAdd_Click(object sender, EventArgs e)
         {
 
@@ -204,6 +208,12 @@ namespace QuestionnaireSystem.SystemAdmin
             if (string.IsNullOrWhiteSpace(txtQusetion.Text))
             {
                 Response.Write($"<Script language='JavaScript'>alert('問題名稱未填寫'); location.href='/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2'; </Script>");
+                return;
+            }
+            int type = Convert.ToInt32(this.TypeDDList.SelectedValue);
+            if (string.IsNullOrWhiteSpace(txtAnswer.Text) && (type == 0 || type ==1))
+            {
+                Response.Write($"<Script language='JavaScript'>alert('單選、複選方塊答案欄不能為空'); location.href='/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2'; </Script>");
                 return;
             }
             List<Question> list3 = new List<Question>();
@@ -220,7 +230,6 @@ namespace QuestionnaireSystem.SystemAdmin
             if (HttpContext.Current.Session["QuestionID"] == null)
             {
                 int number = list3.Count;
-                int type = Convert.ToInt32(this.TypeDDList.SelectedValue);
                 Question newQuestion = new Question()
                 {
                     QuestionnaireID = (idtext).ToGuid(),
@@ -241,8 +250,7 @@ namespace QuestionnaireSystem.SystemAdmin
                 list3.Add(newQuestion);
             }
             else
-            {
-                int type = Convert.ToInt32(this.TypeDDList.SelectedValue);
+            {                
                 string questionIDstr = HttpContext.Current.Session["QuestionID"].ToString();
                 Guid sessionQuesid = questionIDstr.ToGuid();
                 for (int i = 0; i < list3.Count; i++)
@@ -323,7 +331,7 @@ namespace QuestionnaireSystem.SystemAdmin
 
         }
         /// <summary>
-        /// 問卷送出鈕
+        /// 問題送出鈕
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -342,7 +350,7 @@ namespace QuestionnaireSystem.SystemAdmin
                         QuestionManger.UpdateQuestion(list3[i].ID, list3[i]);
                         if (list3[i].Type == 0 || list3[i].Type == 1)
                         {
-                            OptionManger.DeleteOption(list3[i].ID);
+                            OptionManger.DeleteOption(list3[i].ID, list3[i].QuestionnaireID);
                             char[] AnsChars = { ';' };
                             string[] Ans = list3[i].QusetionOption.Split(AnsChars);
 
@@ -382,10 +390,10 @@ namespace QuestionnaireSystem.SystemAdmin
                 }
 
                 HttpContext.Current.Session["QusetionList"] = null;
-
+                Response.Write($"<Script language='JavaScript'>alert('問題新增/編輯已完成'); location.href='/SystemAdmin/list.aspx'; </Script>");
             }
             else
-                Response.Redirect($"/SystemAdmin/list.aspx");
+                Response.Redirect("/SystemAdmin/list.aspx");
         }
 
         protected void btnCanceltab2_Click(object sender, EventArgs e)
