@@ -56,6 +56,19 @@ namespace QuestionnaireSystem.SystemAdmin
                             this.QusetionView.DataBind();
                         }
                     }
+                    if (HttpContext.Current.Session["QuestionID"] != null)
+                    {
+                        string quesStr = HttpContext.Current.Session["QuestionID"].ToString();
+                        var ques = QuestionManger.GetQuestionByQuestionID(quesStr.ToGuid());
+                        if (ques != null)
+                        {
+                            txtQusetion.Text = ques.Name;
+                            txtAnswer.Text = ques.QusetionOption;
+                            TypeDDList.SelectedValue = ques.Type.ToString();
+                            CheckBox2.Checked = ques.IsMust;
+                        }
+                    }
+
 
                 }
                 else
@@ -101,7 +114,7 @@ namespace QuestionnaireSystem.SystemAdmin
                 }
                 else if (type == 4)
                 {
-                    lbl.Text = "文字方塊(數字)";
+                    lbl.Text = "文字方塊(Email)";
                 }
                 else if (type == 5)
                 {
@@ -114,43 +127,177 @@ namespace QuestionnaireSystem.SystemAdmin
         {
 
             string idtext = this.Request.QueryString["ID"];
+            if (string.IsNullOrWhiteSpace(txtQusetion.Text))
+            {
+                Response.Write($"<Script language='JavaScript'>alert('問題名稱未填寫'); location.href='/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2'; </Script>");
+                return;
+            }
             List<Question> list3 = new List<Question>();
-            if(HttpContext.Current.Session["QusetionList"] == null)
+            if (HttpContext.Current.Session["QusetionList"] == null)
             {
-                 list3 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
+                list3 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
             }
             else
             {
-                 list3 = (List<Question>)HttpContext.Current.Session["QusetionList"];
+                list3 = (List<Question>)HttpContext.Current.Session["QusetionList"];
             }
-            
-            int number = list3.Count;
-            int type = Convert.ToInt32(this.TypeDDList.SelectedValue);
-            Question newQuestion = new Question()
-            {
-                QuestionnaireID = (idtext).ToGuid(),
-                ID = Guid.NewGuid(),
-                Number = number + 1,
-                Type = type,
-                Name = txtQusetion.Text
-            };
-            if (this.CheckBox2.Checked)
-                newQuestion.IsMust = true;
-            else
-                newQuestion.IsMust = false;
-            if (type == 0 || type == 1)
-            {
-                newQuestion.QusetionOption = txtAnswer.Text;
-            }
-            list3.Add(newQuestion);
-            
-            HttpContext.Current.Session["QusetionList"] = list3;
 
+            //檢查是新增還是編輯
+            if (HttpContext.Current.Session["QuestionID"] == null)
+            {
+                int number = list3.Count;
+                int type = Convert.ToInt32(this.TypeDDList.SelectedValue);
+                Question newQuestion = new Question()
+                {
+                    QuestionnaireID = (idtext).ToGuid(),
+                    ID = Guid.NewGuid(),
+                    Number = number + 1,
+                    Type = type,
+                    Name = txtQusetion.Text
+                };
+                if (this.CheckBox2.Checked)
+                    newQuestion.IsMust = true;
+                else
+                    newQuestion.IsMust = false;
+                if (type == 0 || type == 1)
+                {
+                    newQuestion.QusetionOption = txtAnswer.Text;
+                }
+                list3.Add(newQuestion);
+            }
+            else
+            {
+                int type = Convert.ToInt32(this.TypeDDList.SelectedValue);
+
+                for ( int i =0; i<list3.Count;i++)
+                {
+                    string questionIDstr = HttpContext.Current.Session["QuestionID"].ToString();
+                    Guid sessionQuesid = questionIDstr.ToGuid();
+                    if (Guid.Equals(sessionQuesid, list3[i].ID))
+                    {
+                        list3[i].Name = txtQusetion.Text;
+                        list3[i].Type = type;
+                        if (this.CheckBox2.Checked)
+                            list3[i].IsMust = true;
+                        else
+                            list3[i].IsMust = false;
+                        if (type == 0 || type == 1)
+                        {
+                            list3[i].QusetionOption = txtAnswer.Text;
+                        }
+
+                    }
+                }
+                HttpContext.Current.Session["QuestionID"] = null;
+            }
+            HttpContext.Current.Session["QusetionList"] = list3;
             Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
 
         }
 
         protected void btnSubmittab1_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtTitle.Text))
+            {
+                return;
+            }
+
+            Questionnaire questionnaire = new Questionnaire()
+            {
+                Title = txtTitle.Text,
+                IsStart = 1
+
+
+            };
+            //起始時間跟結束時間
+            if (string.IsNullOrWhiteSpace(txtStartTime.Text) || !classes.check.IsDate(txtStartTime.Text))
+                questionnaire.StartTime = DateTime.Now;
+            else
+                questionnaire.StartTime = Convert.ToDateTime(txtStartTime.Text);
+
+            if (string.IsNullOrWhiteSpace(txtEndTime.Text) || !classes.check.IsDate(txtEndTime.Text))
+                questionnaire.EndTime = DateTime.MaxValue;
+            else
+                questionnaire.EndTime = Convert.ToDateTime(txtEndTime.Text);
+            //內容
+            if (!string.IsNullOrWhiteSpace(txtCaption.Text))
+                questionnaire.Caption = txtCaption.Text;
+            //啟用
+            if (CheckBox1.Checked)
+                questionnaire.State = 1;
+            else
+                questionnaire.State = 0;
+
+            string idtext = this.Request.QueryString["ID"];
+            if (string.IsNullOrWhiteSpace(idtext))
+            {
+                questionnaire.QuestionnaireID = Guid.NewGuid();
+                QuestionnaireManger.CreateQuestionnaire(questionnaire);
+                string questionnaireID = questionnaire.QuestionnaireID.ToString();
+                Response.Redirect($"/SystemAdmin/Detail.aspx?ID={questionnaireID}#tabs-2");
+            }
+            else
+            {
+                QuestionnaireManger.UpdateQuestionnaire(idtext.ToGuid(), questionnaire);
+                Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
+            }
+
+        }
+
+        protected void btnSubmittab2_Click(object sender, EventArgs e)
+        {
+            if (HttpContext.Current.Session["QusetionList"] != null)
+            {
+                string idtext = this.Request.QueryString["ID"];
+                var list2 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
+                List<Question> list3 = (List<Question>)HttpContext.Current.Session["QusetionList"];
+                for (int i = 0; i < list2.Count; i++)
+                {
+                    QuestionManger.UpdateQuestion(list3[i].ID, list3[i]);
+                }
+                for (int i = list2.Count; i < list3.Count; i++)
+                {
+                    QuestionManger.CreateQuestion(list3[i]);
+                }
+
+                HttpContext.Current.Session["QusetionList"] = null;
+
+            }
+            else
+                Response.Redirect($"/SystemAdmin/list.aspx");
+        }
+
+        protected void btnCanceltab2_Click(object sender, EventArgs e)
+        {
+            Response.Redirect($"/SystemAdmin/list.aspx");
+        }
+
+        protected void btnCanceltab1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect($"/SystemAdmin/list.aspx");
+        }
+
+        protected void QusetionView_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+
+        }
+
+        protected void QusetionView_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Upate")
+            {
+                string idtext = this.Request.QueryString["ID"];
+                var questionID = e.CommandArgument.ToString();
+                // var thisOrder = UserInfoManager.GETUserInfoAccount(custAccount);
+                HttpContext.Current.Session["QuestionID"] = questionID;
+
+                Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
+
+
+            }
+        }
+
+        protected void QusetionView_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
 
         }

@@ -9,6 +9,7 @@
    </div><br/>
     
     <div>
+        <asp:Button ID="btnCreate1" runat="server" Text="新增" OnClick="btnCreate1_Click" /><br />
         <asp:GridView ID="QuestionnaireView" runat="server" AutoGenerateColumns="False" CellPadding="10" AllowPaging="True" OnPageIndexChanging="QuestionnaireView_PageIndexChanging">
             <Columns>
                 <asp:BoundField DataField="ID" HeaderText="#" />

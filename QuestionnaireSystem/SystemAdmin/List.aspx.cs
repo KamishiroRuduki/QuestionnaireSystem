@@ -34,5 +34,10 @@ namespace QuestionnaireSystem.SystemAdmin
         {
 
         }
+
+        protected void btnCreate1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect($"/SystemAdmin/Detail.aspx?#tabs-1");
+        }
     }
 }

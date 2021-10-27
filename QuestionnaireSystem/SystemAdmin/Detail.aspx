@@ -17,6 +17,7 @@
             <li><a href="#tabs-4">統計</a></li>
         </ul>
         <div id="tabs-1">
+            
             問卷名稱&nbsp&nbsp<asp:TextBox ID="txtTitle" runat="server" Width="380px"></asp:TextBox><br />
             <br />
             描述內容&nbsp&nbsp<asp:TextBox ID="txtCaption" runat="server" Height="114px" Width="380px"></asp:TextBox><br />
@@ -28,7 +29,7 @@
             <asp:CheckBox ID="CheckBox1" runat="server" OnCheckedChanged="CheckBox1_CheckedChanged" />
             已啟用
             <br />
-            <asp:Button ID="btnCanceltab1" runat="server" Text="取消" /><asp:Button ID="btnSubmittab1" runat="server" Text="送出" OnClick="btnSubmittab1_Click" />
+            <asp:Button ID="btnCanceltab1" runat="server" Text="取消" OnClick="btnCanceltab1_Click" /><asp:Button ID="btnSubmittab1" runat="server" Text="送出" OnClick="btnSubmittab1_Click" />
         </div>
         <div id="tabs-2">
             <div>
@@ -45,11 +46,11 @@
             </asp:DropDownList>
                 <asp:CheckBox ID="CheckBox2" runat="server" />必填
                 <br />
-                回答&nbsp<asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>&nbsp&nbsp&nbsp&nbsp&nbsp
+                回答&nbsp<asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>(多個答案以;分隔)&nbsp&nbsp&nbsp&nbsp&nbsp
                 <asp:Button ID="btnAdd" runat="server" Text="加入" OnClick="btnAdd_Click" /><br />
             </div>
             <div>
-                <asp:GridView ID="QusetionView" runat="server" OnRowDataBound="QusetionView_RowDataBound" AutoGenerateColumns="False" CellPadding="10">
+                <asp:GridView ID="QusetionView" runat="server" OnRowDataBound="QusetionView_RowDataBound" AutoGenerateColumns="False" CellPadding="10" OnRowCancelingEdit="QusetionView_RowCancelingEdit" OnRowCommand="QusetionView_RowCommand" OnRowDeleting="QusetionView_RowDeleting">
                     <Columns>
                         <asp:BoundField DataField="Number" HeaderText="#" />
                         <asp:BoundField DataField="Name" HeaderText="問題" />
@@ -69,7 +70,7 @@
 
                 </asp:GridView>
             </div>
-            <asp:Button ID="btnCanceltab2" runat="server" Text="取消" /><asp:Button ID="btnSubmittab2" runat="server" Text="送出" />
+            <asp:Button ID="btnCanceltab2" runat="server" Text="取消" OnClick="btnCanceltab2_Click" /><asp:Button ID="btnSubmittab2" runat="server" Text="送出" OnClick="btnSubmittab2_Click" />
         </div>
         <div id="tabs-3">
             <asp:Button ID="Button1" runat="server" Text="匯出" />

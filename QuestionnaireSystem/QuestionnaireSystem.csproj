@@ -91,6 +91,7 @@
     <Content Include="index.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="classes\check.cs" />
     <Compile Include="confirm.aspx.cs">
       <DependentUpon>confirm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

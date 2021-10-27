@@ -19,7 +19,7 @@ namespace QuestionnaireSystem.DBSouce
                         (from item in context.Questionnaires
                          orderby item.ID descending
                          select item);
-
+                    
                     var list = query.ToList();
                     return list;
                 }
@@ -51,6 +51,53 @@ namespace QuestionnaireSystem.DBSouce
             {
                 Logger.WriteLog(ex);
                 return null;
+            }
+        }
+        public static void CreateQuestionnaire(Questionnaire questionnaire)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    context.Questionnaires.Add(questionnaire);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+
+            }
+        }
+
+        public static void UpdateQuestionnaire(Guid questionnaireid,Questionnaire questionnaire)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.Questionnaires
+                         where item.QuestionnaireID == questionnaireid
+                         select item);
+
+                    var list = query.FirstOrDefault();
+                    if (list != null)
+                    {
+                        list.Title = questionnaire.Title;
+                        list.StartTime = questionnaire.StartTime;
+                        list.EndTime = questionnaire.EndTime;
+                        list.Caption = questionnaire.Caption;
+                        list.IsStart = questionnaire.IsStart;
+                        list.State = list.State;
+                    }
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+
             }
         }
     }
