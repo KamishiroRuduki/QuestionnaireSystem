@@ -22,6 +22,8 @@ namespace QuestionnaireSystem.SystemAdmin
                     string idtext = this.Request.QueryString["ID"];
                     var list = QuestionnaireManger.GETQuestionnaire(idtext.ToGuid());
                     var list2 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
+                    var personList = PersonManger.GetPersonList(idtext.ToGuid());
+                    //問卷
                     if (list != null)
                     {
                         txtTitle.Text = list.Title;
@@ -42,8 +44,10 @@ namespace QuestionnaireSystem.SystemAdmin
                             CheckBox1.Checked = true;
                         }
                     }
+                    //問題
                     if (list2 != null)
                     {
+                        //假如session有問題List的資料就用該資料做資料繫結
                         if (HttpContext.Current.Session["QusetionList"] == null)
                         {
                             this.QusetionView.DataSource = list2;
@@ -56,18 +60,88 @@ namespace QuestionnaireSystem.SystemAdmin
                             this.QusetionView.DataBind();
                         }
                     }
+                    //填寫資料
+                    if (personList != null)
+                    {
+                        this.PersonView.DataSource = personList;
+                        this.PersonView.DataBind();
+                    }
+                    //假如session有問題的ID，就做回填(編輯問題用)
                     if (HttpContext.Current.Session["QuestionID"] != null)
                     {
-                        string quesStr = HttpContext.Current.Session["QuestionID"].ToString();
-                        var ques = QuestionManger.GetQuestionByQuestionID(quesStr.ToGuid());
-                        if (ques != null)
+                        if (HttpContext.Current.Session["QusetionList"] == null)
                         {
-                            txtQusetion.Text = ques.Name;
-                            txtAnswer.Text = ques.QusetionOption;
-                            TypeDDList.SelectedValue = ques.Type.ToString();
-                            CheckBox2.Checked = ques.IsMust;
+                            string quesStr = HttpContext.Current.Session["QuestionID"].ToString();
+                            var ques = QuestionManger.GetQuestionByQuestionID(quesStr.ToGuid());
+                            if (ques != null)
+                            {
+                                txtQusetion.Text = ques.Name;
+                                txtAnswer.Text = ques.QusetionOption;
+                                TypeDDList.SelectedValue = ques.Type.ToString();
+                                CheckBox2.Checked = ques.IsMust;
+                            }
+                        }
+                        else
+                        {
+                            string questionIDstr = HttpContext.Current.Session["QuestionID"].ToString();
+                            Guid sessionQuesid = questionIDstr.ToGuid();                            
+                            var list3 = (List<Question>)HttpContext.Current.Session["QusetionList"];
+                            for (int i = 0; i < list3.Count; i++)
+                            {
+                                if (Guid.Equals(sessionQuesid, list3[i].ID))
+                                {
+                                    txtQusetion.Text = list3[i].Name;
+                                    txtAnswer.Text = list3[i].QusetionOption;
+                                    TypeDDList.SelectedValue = list3[i].Type.ToString();
+                                    CheckBox2.Checked = list3[i].IsMust;
+                                    break;
+                                }
+                            }
                         }
                     }
+                    if (this.Request.QueryString["PersonID"] != null)
+                    {
+                        this.PersonView.Visible = false;
+                        string personidtext = this.Request.QueryString["PersonID"];
+                        var thisPerson = PersonManger.GetPersonbyID(personidtext.ToGuid());
+                        if (thisPerson != null)
+                        {
+                            Button1.Visible = false;
+                            lblNametab3.Visible = true;
+                            lblPhonetab3.Visible = true;
+                            lblEmailtab3.Visible = true;
+                            lblAgetab3.Visible = true;
+                            lblDatetab3.Visible = true;
+                            lblCreateTime.Visible = true;
+                            txtNametab3.Text = thisPerson.Name;
+                            txtNametab3.Visible = true;
+                            txtEmailtab3.Text = thisPerson.Email;
+                            txtEmailtab3.Visible = true;
+                            txtPhonetab3.Text = thisPerson.Phone;
+                            txtPhonetab3.Visible = true;
+                            txtAgetab3.Text = thisPerson.Age;
+                            txtAgetab3.Visible = true;
+                            lblCreateTime.Text = thisPerson.CreateDate.ToString();
+                            for (int i = 0; i < list2.Count; i++)
+                            {
+                                Literal quesname = new Literal();
+                                quesname.Text = (i + 1).ToString() + "." + list2[i].Name;
+                                quesname.Text += "<br/>";
+                                PHtab3.Controls.Add(quesname);
+                                Literal personAnswer = new Literal();
+                                var answer = AnswerManger.GetAnswer(list2[i].ID, personidtext.ToGuid());
+                                if (answer != null)
+                                    personAnswer.Text = answer.AnswerOption;
+                                personAnswer.Text += "</br></br>";
+                                PHtab3.Controls.Add(personAnswer);
+                            }
+                        }
+
+
+
+                    }
+
+
 
 
                 }
@@ -153,7 +227,8 @@ namespace QuestionnaireSystem.SystemAdmin
                     ID = Guid.NewGuid(),
                     Number = number + 1,
                     Type = type,
-                    Name = txtQusetion.Text
+                    Name = txtQusetion.Text,
+                    IsCommon = 0
                 };
                 if (this.CheckBox2.Checked)
                     newQuestion.IsMust = true;
@@ -168,15 +243,15 @@ namespace QuestionnaireSystem.SystemAdmin
             else
             {
                 int type = Convert.ToInt32(this.TypeDDList.SelectedValue);
-
-                for ( int i =0; i<list3.Count;i++)
-                {
-                    string questionIDstr = HttpContext.Current.Session["QuestionID"].ToString();
-                    Guid sessionQuesid = questionIDstr.ToGuid();
+                string questionIDstr = HttpContext.Current.Session["QuestionID"].ToString();
+                Guid sessionQuesid = questionIDstr.ToGuid();
+                for (int i = 0; i < list3.Count; i++)
+                {                  
                     if (Guid.Equals(sessionQuesid, list3[i].ID))
                     {
                         list3[i].Name = txtQusetion.Text;
                         list3[i].Type = type;
+                        list3[i].IsCommon = 1;
                         if (this.CheckBox2.Checked)
                             list3[i].IsMust = true;
                         else
@@ -185,7 +260,7 @@ namespace QuestionnaireSystem.SystemAdmin
                         {
                             list3[i].QusetionOption = txtAnswer.Text;
                         }
-
+                        break;
                     }
                 }
                 HttpContext.Current.Session["QuestionID"] = null;
@@ -194,7 +269,11 @@ namespace QuestionnaireSystem.SystemAdmin
             Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
 
         }
-
+        /// <summary>
+        /// 問卷送出鈕
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmittab1_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtTitle.Text))
@@ -243,7 +322,11 @@ namespace QuestionnaireSystem.SystemAdmin
             }
 
         }
-
+        /// <summary>
+        /// 問卷送出鈕
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmittab2_Click(object sender, EventArgs e)
         {
             if (HttpContext.Current.Session["QusetionList"] != null)
@@ -253,11 +336,49 @@ namespace QuestionnaireSystem.SystemAdmin
                 List<Question> list3 = (List<Question>)HttpContext.Current.Session["QusetionList"];
                 for (int i = 0; i < list2.Count; i++)
                 {
-                    QuestionManger.UpdateQuestion(list3[i].ID, list3[i]);
+                    if (list3[i].IsCommon != 0)
+                    {
+                        list3[i].IsCommon = 0;
+                        QuestionManger.UpdateQuestion(list3[i].ID, list3[i]);
+                        if (list3[i].Type == 0 || list3[i].Type == 1)
+                        {
+                            OptionManger.DeleteOption(list3[i].ID);
+                            char[] AnsChars = { ';' };
+                            string[] Ans = list3[i].QusetionOption.Split(AnsChars);
+
+                            for (int j = 0; j < Ans.Length; j++)
+                            {
+                                Static option = new Static()
+                                {
+                                    QuestionID = list3[i].ID,
+                                    QuestionnaireID = list3[i].QuestionnaireID,
+                                    QuestionOption = Ans[j],
+                                    Sum = 0
+                                };
+                                OptionManger.CreateOption(option);
+                            }
+                        }
+                    }
                 }
                 for (int i = list2.Count; i < list3.Count; i++)
                 {
                     QuestionManger.CreateQuestion(list3[i]);
+                    if (list3[i].Type == 0 || list3[i].Type == 1)
+                    {
+                        char[] AnsChars = { ';' };
+                        string[] Ans = list3[i].QusetionOption.Split(AnsChars);
+                        for (int j = 0; j < Ans.Length; j++)
+                        {
+                            Static option = new Static()
+                            {
+                                QuestionID = list3[i].ID,
+                                QuestionnaireID = list3[i].QuestionnaireID,
+                                QuestionOption = Ans[j],
+                                Sum = 0
+                            };
+                            OptionManger.CreateOption(option);
+                        }
+                    }
                 }
 
                 HttpContext.Current.Session["QusetionList"] = null;
@@ -300,6 +421,12 @@ namespace QuestionnaireSystem.SystemAdmin
         protected void QusetionView_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
 
+        }
+
+        protected void PersonView_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            PersonView.PageIndex = e.NewPageIndex;
+            this.PersonView.DataBind();
         }
     }
 }

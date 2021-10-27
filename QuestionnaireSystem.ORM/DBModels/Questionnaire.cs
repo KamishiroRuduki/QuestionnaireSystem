@@ -24,7 +24,6 @@ namespace QuestionnaireSystem.ORM.DBModels
         [Column(TypeName = "date")]
         public DateTime? EndTime { get; set; }
 
-        [Required]
         [StringLength(500)]
         public string Caption { get; set; }
 

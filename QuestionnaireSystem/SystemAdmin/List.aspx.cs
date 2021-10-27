@@ -14,7 +14,7 @@ namespace QuestionnaireSystem.SystemAdmin
         {
             if (!IsPostBack)
             {
-               
+                Session.Abandon();
                 var list = QuestionnaireManger.GetQuestionnaireList();
                 if (list.Count > 0)
                 {

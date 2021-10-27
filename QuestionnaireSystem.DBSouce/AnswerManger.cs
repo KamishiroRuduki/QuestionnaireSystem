@@ -25,5 +25,29 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
+
+        public static Answer GetAnswer(Guid quesid, Guid personid)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.Answers
+                         where item.PersonID == personid && item.QuestionID == quesid
+                         select item);
+
+                    var list = query.FirstOrDefault();                   
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
+
+            }
+        }
+
     }
 }

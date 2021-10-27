@@ -9,7 +9,6 @@ namespace QuestionnaireSystem.ORM.DBModels
     [Table("Static")]
     public partial class Static
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
 
         public Guid QuestionnaireID { get; set; }

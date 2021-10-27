@@ -74,7 +74,20 @@
         </div>
         <div id="tabs-3">
             <asp:Button ID="Button1" runat="server" Text="匯出" />
-            <asp:GridView ID="PersonView" runat="server"></asp:GridView>
+            <asp:GridView ID="PersonView" runat="server" AutoGenerateColumns="False" AllowPaging="True" OnPageIndexChanging="PersonView_PageIndexChanging"  CellPadding="10">
+                <Columns>
+                    <asp:BoundField DataField="Name" HeaderText="姓名" />
+                    <asp:BoundField DataField="CreateDate" HeaderText="填寫時間" />
+                    <asp:HyperLinkField DataNavigateUrlFields="QuestionnaireID,ID" DataNavigateUrlFormatString="\SystemAdmin\Detail.aspx?ID={0}&PersonID={1}#tabs-3" HeaderText="觀看細節" Text="前往" />
+                </Columns>
+
+            </asp:GridView>
+            <asp:Label ID="lblNametab3" runat="server" Text="姓名" Visible="false" ></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtNametab3" runat="server" Enabled="false" Visible="false"></asp:TextBox>&nbsp&nbsp&nbsp&nbsp
+            <asp:Label ID="lblPhonetab3" runat="server" Text="手機" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtEmailtab3" runat="server"  Enabled="false"  Visible="false"></asp:TextBox><br/><br/>
+            <asp:Label ID="lblEmailtab3" runat="server" Text="Email" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtPhonetab3" runat="server"  Enabled="false"  Visible="false"></asp:TextBox>&nbsp&nbsp&nbsp&nbsp
+            <asp:Label ID="lblAgetab3" runat="server" Text="年齡" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtAgetab3" runat="server"  Enabled="false"  Visible="false"></asp:TextBox><br/>
+            <asp:Label ID="lblDatetab3" runat="server" Text="填寫時間" Visible="false"></asp:Label>&nbsp<asp:Label ID="lblCreateTime" runat="server" Visible="false" ></asp:Label><br/><br/>
+            <asp:PlaceHolder ID="PHtab3" runat="server"></asp:PlaceHolder>
         </div>
         <div id="tabs-4">
             <p>統計</p>

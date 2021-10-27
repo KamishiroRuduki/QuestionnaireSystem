@@ -58,6 +58,52 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
+        public static void CreateOption(Static option)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    context.Statics.Add(option);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
 
+            }
+        }
+
+        public static void DeleteOption(Guid quesid)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.Statics
+                         where item.QuestionID == quesid
+                         select item).ToList();
+                    
+                    if (query != null)
+                    {
+                        foreach (Static option in query)
+                        {
+                            context.Statics.Remove(option);
+                        }
+                       // context.Accountings.Remove(dbobject);
+
+                        context.SaveChanges();
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+
+            }
+        }
     }
 }

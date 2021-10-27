@@ -47,7 +47,49 @@ namespace QuestionnaireSystem.DBSouce
                 return null;
             }
         }
+        public static Person GetPersonbyID(Guid personid)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.People
+                         where item.ID == personid
+                         select item);
 
+                    var list = query.FirstOrDefault();
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
+            }
+        }
+
+        public static List<Person> GetPersonList(Guid questionnaireid)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.People
+                         where item.QuestionnaireID == questionnaireid
+                         select item);
+
+                    var list = query.ToList();
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
+            }
+        }
         public static bool IsMailCreated(string email)
         {
 
