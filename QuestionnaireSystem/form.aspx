@@ -7,7 +7,8 @@
             justify-content: end;
         }
         .auto-style1 {
-            width: 791px;
+            width: 819px;
+            height: 223px;
         }
     </style>
 </asp:Content>
@@ -58,10 +59,18 @@
                                 htmltext += `<input type="checkbox" ID="${optionArr[j]}" name="${obj.ID}" value =${optionArr[j]} />${optionArr[j]}`;
                             //同一個問題裡選項的check box的name要相同
                         }
-                        else {
-                            htmltext += `<input type="Text" ID="${i}" name="${obj.ID}" />`; //文字方塊(數字、mail、日期格式的我還沒處理)
+                        else if (obj.Type == 2){
+                            htmltext += `<input type="Text" ID="${i}" name="${obj.ID}" />`; //文字方塊
                         }
-
+                        else if (obj.Type == 3) {
+                            htmltext += `<input type="number" ID="${i}" name="${obj.ID}" />`; //文字方塊(數字)
+                        }
+                        else if (obj.Type == 4) {
+                            htmltext += `<input type="email" ID="${i}" name="${obj.ID}" />`; //文字方塊(mail)
+                        }
+                        else if (obj.Type == 5) {
+                            htmltext += `<input type="date" ID="${i}" name="${obj.ID}" />`; //文字方塊(日期)
+                        }
                         htmltext += `<br /></div >`;
                         $("#main").append(htmltext);//結束這一題的區塊，並放進建好的div內
                     }
@@ -123,7 +132,7 @@
     </div>
 
     <div class="entry-content" style="padding-left: 300px;">
-        <div class="auto-style1;jumbotron text-center" >
+        <div class="auto-style1 jumbotron text-center" >
             <asp:Label ID="lblTitle" runat="server" style="font-size: 20px;font-weight:bold" ></asp:Label><br />
             <asp:Literal ID="litCaption" runat="server"></asp:Literal><br />
             <br />

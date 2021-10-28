@@ -15,11 +15,14 @@ namespace QuestionnaireSystem.SystemAdmin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+           // CommonDDListCreate();
             if (!IsPostBack)
             {
                 if (this.Request.QueryString["ID"] != null)
                 {
+                    CommonDDListCreate();
                     string idtext = this.Request.QueryString["ID"];
+                    LinkButton1.PostBackUrl = $"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2";
                     var list = QuestionnaireManger.GETQuestionnaire(idtext.ToGuid());
                     var list2 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
                     var personList = PersonManger.GetPersonList(idtext.ToGuid());
@@ -44,7 +47,7 @@ namespace QuestionnaireSystem.SystemAdmin
                             CheckBox1.Checked = true;
                         }
                     }
-                    //問題
+                    //問題tab+統計tab 頁面建立
                     if (list2 != null)
                     {
                         //假如session有問題List的資料就用該資料做資料繫結
@@ -52,6 +55,7 @@ namespace QuestionnaireSystem.SystemAdmin
                         {
                             this.QusetionView.DataSource = list2;
                             this.QusetionView.DataBind();
+
                         }
                         else
                         {
@@ -59,7 +63,7 @@ namespace QuestionnaireSystem.SystemAdmin
                             this.QusetionView.DataSource = list3;
                             this.QusetionView.DataBind();
                         }
-
+                        //統計頁
                         for (int i = 0; i < list2.Count; i++)
                         {
                             Literal quesname = new Literal();
@@ -188,13 +192,82 @@ namespace QuestionnaireSystem.SystemAdmin
 
                 }
             }
+                
+
         }
 
+        private void CommonDDListCreate()
+        {
+            var commonlist = CommonQuestionManager.GetCommonQuestionsList(); // 
+            CommonDDList.DataSource = commonlist;
+            CommonDDList.DataTextField = "Name";
+            CommonDDList.DataValueField = "ID";
+            CommonDDList.DataBind();
+        }
         protected void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
 
         }
 
+        /// <summary>
+        /// 問卷送出鈕
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSubmittab1_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtTitle.Text))
+            {
+                return;
+            }
+
+            Questionnaire questionnaire = new Questionnaire()
+            {
+                Title = txtTitle.Text,
+                IsStart = 1
+
+
+            };
+            //起始時間跟結束時間
+            if (string.IsNullOrWhiteSpace(txtStartTime.Text) || !classes.check.IsDate(txtStartTime.Text))
+                questionnaire.StartTime = DateTime.Now;
+            else
+                questionnaire.StartTime = Convert.ToDateTime(txtStartTime.Text);
+
+            if (string.IsNullOrWhiteSpace(txtEndTime.Text) || !classes.check.IsDate(txtEndTime.Text))
+                questionnaire.EndTime = DateTime.MaxValue;
+            else
+                questionnaire.EndTime = Convert.ToDateTime(txtEndTime.Text);
+            //內容
+            if (!string.IsNullOrWhiteSpace(txtCaption.Text))
+                questionnaire.Caption = txtCaption.Text;
+            //啟用
+            if (CheckBox1.Checked)
+                questionnaire.State = 1;
+            else
+                questionnaire.State = 0;
+
+            string idtext = this.Request.QueryString["ID"];
+            if (string.IsNullOrWhiteSpace(idtext))
+            {
+                questionnaire.QuestionnaireID = Guid.NewGuid();
+                QuestionnaireManger.CreateQuestionnaire(questionnaire);
+                string questionnaireID = questionnaire.QuestionnaireID.ToString();
+                Response.Redirect($"/SystemAdmin/Detail.aspx?ID={questionnaireID}#tabs-2");
+            }
+            else
+            {
+                QuestionnaireManger.UpdateQuestionnaire(idtext.ToGuid(), questionnaire);
+                Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
+            }
+
+        }
+
+        protected void btnCanceltab1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect($"/SystemAdmin/list.aspx");
+        }
+        //----------------------------------------tab-2------------------------------------------------------
         protected void QusetionView_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             var row = e.Row;
@@ -266,7 +339,11 @@ namespace QuestionnaireSystem.SystemAdmin
             //檢查是新增還是編輯
             if (HttpContext.Current.Session["QuestionID"] == null)
             {
-                int number = list3.Count;
+                int number;
+                if (list3.Count == 0)
+                    number = 0;
+                else
+                    number = list3[list3.Count-1].Number;
                 Question newQuestion = new Question()
                 {
                     QuestionnaireID = (idtext).ToGuid(),
@@ -274,13 +351,14 @@ namespace QuestionnaireSystem.SystemAdmin
                     Number = number + 1,
                     Type = type,
                     Name = txtQusetion.Text,
-                    IsCommon = 0
+                    IsCommon = 0,
+                    IsDel = false
                 };
                 if (this.CheckBox2.Checked)
                     newQuestion.IsMust = true;
                 else
                     newQuestion.IsMust = false;
-                if (type == 0 || type == 1)
+                if (type == 0 || type == 1)// 單選、複選才將回答加入
                 {
                     newQuestion.QusetionOption = txtAnswer.Text;
                 }
@@ -314,59 +392,7 @@ namespace QuestionnaireSystem.SystemAdmin
             Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
 
         }
-        /// <summary>
-        /// 問卷送出鈕
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnSubmittab1_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtTitle.Text))
-            {
-                return;
-            }
 
-            Questionnaire questionnaire = new Questionnaire()
-            {
-                Title = txtTitle.Text,
-                IsStart = 1
-
-
-            };
-            //起始時間跟結束時間
-            if (string.IsNullOrWhiteSpace(txtStartTime.Text) || !classes.check.IsDate(txtStartTime.Text))
-                questionnaire.StartTime = DateTime.Now;
-            else
-                questionnaire.StartTime = Convert.ToDateTime(txtStartTime.Text);
-
-            if (string.IsNullOrWhiteSpace(txtEndTime.Text) || !classes.check.IsDate(txtEndTime.Text))
-                questionnaire.EndTime = DateTime.MaxValue;
-            else
-                questionnaire.EndTime = Convert.ToDateTime(txtEndTime.Text);
-            //內容
-            if (!string.IsNullOrWhiteSpace(txtCaption.Text))
-                questionnaire.Caption = txtCaption.Text;
-            //啟用
-            if (CheckBox1.Checked)
-                questionnaire.State = 1;
-            else
-                questionnaire.State = 0;
-
-            string idtext = this.Request.QueryString["ID"];
-            if (string.IsNullOrWhiteSpace(idtext))
-            {
-                questionnaire.QuestionnaireID = Guid.NewGuid();
-                QuestionnaireManger.CreateQuestionnaire(questionnaire);
-                string questionnaireID = questionnaire.QuestionnaireID.ToString();
-                Response.Redirect($"/SystemAdmin/Detail.aspx?ID={questionnaireID}#tabs-2");
-            }
-            else
-            {
-                QuestionnaireManger.UpdateQuestionnaire(idtext.ToGuid(), questionnaire);
-                Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
-            }
-
-        }
         /// <summary>
         /// 問題送出鈕
         /// </summary>
@@ -435,13 +461,12 @@ namespace QuestionnaireSystem.SystemAdmin
 
         protected void btnCanceltab2_Click(object sender, EventArgs e)
         {
+            HttpContext.Current.Session["QuestionID"] = null;
+            HttpContext.Current.Session["QusetionList"] = null;
             Response.Redirect($"/SystemAdmin/list.aspx");
         }
 
-        protected void btnCanceltab1_Click(object sender, EventArgs e)
-        {
-            Response.Redirect($"/SystemAdmin/list.aspx");
-        }
+
 
         protected void QusetionView_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
@@ -467,6 +492,60 @@ namespace QuestionnaireSystem.SystemAdmin
         {
 
         }
+        protected void TypeDDList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //int type = Convert.ToInt32(this.TypeDDList.SelectedValue);
+            //if (type < 2) //單、複選才給輸入回答
+            //{
+            //    txtAnswer.Enabled = true;
+
+            //}
+            //else
+            //{
+            //    txtAnswer.Enabled = false;
+            //    txtAnswer.Text = string.Empty;
+            //}
+        }
+
+        protected void btnDeltab2_Click(object sender, EventArgs e)
+        {
+            string idtext = this.Request.QueryString["ID"];
+
+            List<Question> list3 = (List<Question>)HttpContext.Current.Session["QusetionList"];
+            List<int> removeList = new List<int>();
+            for (int i = 0; i < QusetionView.Rows.Count; i++)
+            {
+                CheckBox cb = (CheckBox)QusetionView.Rows[i].FindControl("cbDeltab2");
+                if (cb.Checked)
+                {
+                    //找到FormNumber
+                    string formNumber = QusetionView.Rows[i].Cells[1].Text;
+                    //利用FormNumber做刪除
+                    int intformNumber;
+                    if (int.TryParse(formNumber, out intformNumber))
+                    {
+                        removeList.Add(intformNumber);
+                    }
+                }
+
+            }
+            for (int i = 0; i < removeList.Count; i++)
+            {
+                QuestionManger.DelQuestion(idtext.ToGuid(), removeList[i]); //DB刪除
+                if (HttpContext.Current.Session["QusetionList"] != null)
+                {
+                    var itemToRemove = list3.SingleOrDefault(r => r.Number == removeList[i]);
+                    if (itemToRemove != null)
+                        list3.Remove(itemToRemove);//session資料同時也要做處理
+                }
+                else
+                    list3 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
+            }
+            HttpContext.Current.Session["QusetionList"] = list3;
+            //重整頁面
+            Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
+        }
+        //--------------------------------------tab-3----------------------------------------------------
 
         protected void PersonView_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
@@ -479,6 +558,33 @@ namespace QuestionnaireSystem.SystemAdmin
         {
             string idtext = this.Request.QueryString["ID"];
             Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-3");
+        }
+
+        protected void btnCommonQusetion_Click(object sender, EventArgs e)
+        {
+            //int commonid = Convert.ToInt32(this.CommonDDList.SelectedValue);
+            //var common = CommonQuestionManager.GetCommonQuestionByID(commonid);
+            //txtQusetion.Text = common.Name;
+            //if (common.Type == 0 || common.Type == 1)
+            //    txtAnswer.Text = common.QusetionOption;
+            ////string idtext = this.Request.QueryString["ID"];
+            ////Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
+
+        }
+
+        protected void LinkButton1_Click(object sender, EventArgs e)
+        {
+            int commonid;
+            if (int.TryParse(this.CommonDDList.SelectedValue, out commonid))
+            {
+                var common = CommonQuestionManager.GetCommonQuestionByID(commonid);
+                txtQusetion.Text = common.Name;
+                TypeDDList.SelectedValue = common.Type.ToString();
+                if (common.Type == 0 || common.Type == 1)
+                    txtAnswer.Text = common.QusetionOption;
+
+            }
+
         }
     }
 }

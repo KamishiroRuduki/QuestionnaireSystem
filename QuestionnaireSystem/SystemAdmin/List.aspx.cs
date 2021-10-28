@@ -13,9 +13,12 @@ namespace QuestionnaireSystem.SystemAdmin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            HttpContext.Current.Session["QuestionID"] = null;
+            HttpContext.Current.Session["QusetionList"] = null;
             if (!IsPostBack)
             {
-              //  Session.Abandon();
+                //  Session.Abandon();
+                
                 var list = QuestionnaireManger.GetQuestionnaireList();
                 if (list.Count > 0)
                 {
@@ -82,6 +85,48 @@ namespace QuestionnaireSystem.SystemAdmin
 
 
             }
+        }
+
+        protected void btnDel_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < QuestionnaireView.Rows.Count; i++)
+            {
+                CheckBox cb = (CheckBox)QuestionnaireView.Rows[i].FindControl("CheckBox1");
+                if (cb.Checked)
+                {
+                    //找到FormNumber
+                    string formNumber = QuestionnaireView.Rows[i].Cells[1].Text;
+                    //利用FormNumber做刪除
+                    int intformNumber;
+                    if (int.TryParse(formNumber, out intformNumber))
+                        QuestionnaireManger.DelQuestionnaire(intformNumber);
+                }
+
+            }
+            //重整頁面
+            Response.Redirect(Request.Url.ToString());
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            var searchText = this.tbSearch.Text;
+            if (searchText == "" && this.txtDatetimeStart.Text == "" && this.txtDatetimeEnd.Text == "")
+                return;
+            DateTime searchTimeStart = DateTime.MinValue;
+            DateTime searchTimeEnd = DateTime.MaxValue;
+            if (this.txtDatetimeStart.Text != "")
+                searchTimeStart = Convert.ToDateTime(this.txtDatetimeStart.Text);
+            if (this.txtDatetimeEnd.Text != "")
+                searchTimeEnd = Convert.ToDateTime(this.txtDatetimeEnd.Text);
+            var searchList = QuestionnaireManger.GetQuestionnaireListBySearch(searchText, searchTimeStart, searchTimeEnd);
+            if (searchList.Count == 0) 
+            { 
+                Response.Write($"<Script language='JavaScript'>alert('查無資料'); </Script>");
+                return;
+            }
+            this.QuestionnaireView.DataSource = searchList;
+            this.QuestionnaireView.DataBind();
+
         }
     }
 }

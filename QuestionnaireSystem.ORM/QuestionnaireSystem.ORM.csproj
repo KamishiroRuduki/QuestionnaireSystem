@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="DBModels\Account.cs" />
     <Compile Include="DBModels\Answer.cs" />
+    <Compile Include="DBModels\CommonQuestion.cs" />
     <Compile Include="DBModels\ContextModel.cs" />
     <Compile Include="DBModels\Option.cs" />
     <Compile Include="DBModels\Person.cs" />

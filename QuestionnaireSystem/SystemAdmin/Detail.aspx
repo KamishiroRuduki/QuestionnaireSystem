@@ -17,7 +17,6 @@
             <li><a href="#tabs-4">統計</a></li>
         </ul>
         <div id="tabs-1">
-            
             問卷名稱&nbsp&nbsp<asp:TextBox ID="txtTitle" runat="server" Width="380px"></asp:TextBox><br />
             <br />
             描述內容&nbsp&nbsp<asp:TextBox ID="txtCaption" runat="server" Height="114px" Width="380px"></asp:TextBox><br />
@@ -33,10 +32,12 @@
         </div>
         <div id="tabs-2">
             <div>
-                種類&nbsp<asp:DropDownList ID="CommonDDList" runat="server"></asp:DropDownList><br />
+                種類&nbsp<asp:DropDownList ID="CommonDDList" runat="server" AutoPostBack="false"></asp:DropDownList>
+                <asp:Button ID="btnCommonQusetion" runat="server" Text="套用" OnClick="btnCommonQusetion_Click" Visible="false" />
+                <asp:LinkButton ID="LinkButton1" runat="server" OnClick="LinkButton1_Click" BorderStyle="Solid">套用</asp:LinkButton><br />
 
                 問題&nbsp<asp:TextBox ID="txtQusetion" runat="server"></asp:TextBox>&nbsp
-            <asp:DropDownList ID="TypeDDList" runat="server">
+            <asp:DropDownList ID="TypeDDList" runat="server" OnSelectedIndexChanged="TypeDDList_SelectedIndexChanged">
                 <asp:ListItem Value="0">單選方塊</asp:ListItem>
                 <asp:ListItem Value="1">複選方塊</asp:ListItem>
                 <asp:ListItem Value="2">文字方塊</asp:ListItem>
@@ -50,8 +51,17 @@
                 <asp:Button ID="btnAdd" runat="server" Text="加入" OnClick="btnAdd_Click" /><br />
             </div>
             <div>
+                <asp:Button ID="btnDeltab2" runat="server" Text="刪除" OnClick="btnDeltab2_Click" /><br/>
                 <asp:GridView ID="QusetionView" runat="server" OnRowDataBound="QusetionView_RowDataBound" AutoGenerateColumns="False" CellPadding="10" OnRowCancelingEdit="QusetionView_RowCancelingEdit" OnRowCommand="QusetionView_RowCommand" OnRowDeleting="QusetionView_RowDeleting">
                     <Columns>
+                        <asp:TemplateField HeaderText="刪除">
+                            <EditItemTemplate>
+                                <asp:CheckBox ID="cbDeltab2" runat="server" />
+                            </EditItemTemplate>
+                            <ItemTemplate>
+                                <asp:CheckBox ID="cbDeltab2" runat="server" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
                         <asp:BoundField DataField="Number" HeaderText="#" />
                         <asp:BoundField DataField="Name" HeaderText="問題" />
                         <asp:TemplateField HeaderText="種類">
@@ -74,7 +84,7 @@
         </div>
         <div id="tabs-3">
             <asp:Button ID="Button1" runat="server" Text="匯出" />
-            <asp:GridView ID="PersonView" runat="server" AutoGenerateColumns="False" AllowPaging="True" OnPageIndexChanging="PersonView_PageIndexChanging"  CellPadding="10">
+            <asp:GridView ID="PersonView" runat="server" AutoGenerateColumns="False" AllowPaging="True" OnPageIndexChanging="PersonView_PageIndexChanging" CellPadding="10">
                 <Columns>
                     <asp:BoundField DataField="Name" HeaderText="姓名" />
                     <asp:BoundField DataField="CreateDate" HeaderText="填寫時間" />
@@ -82,12 +92,15 @@
                 </Columns>
 
             </asp:GridView>
-            <asp:Label ID="lblNametab3" runat="server" Text="姓名" Visible="false" ></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtNametab3" runat="server" Enabled="false" Visible="false"></asp:TextBox>&nbsp&nbsp&nbsp&nbsp
-            <asp:Label ID="lblPhonetab3" runat="server" Text="手機" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtEmailtab3" runat="server"  Enabled="false"  Visible="false"></asp:TextBox><br/><br/>
-            <asp:Label ID="lblEmailtab3" runat="server" Text="Email" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtPhonetab3" runat="server"  Enabled="false"  Visible="false"></asp:TextBox>&nbsp&nbsp&nbsp&nbsp
-            <asp:Label ID="lblAgetab3" runat="server" Text="年齡" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtAgetab3" runat="server"  Enabled="false"  Visible="false"></asp:TextBox><br/>
-            <asp:Label ID="lblDatetab3" runat="server" Text="填寫時間" Visible="false"></asp:Label>&nbsp<asp:Label ID="lblCreateTime" runat="server" Visible="false" ></asp:Label><br/><br/>
-            <asp:PlaceHolder ID="PHtab3" runat="server"></asp:PlaceHolder><br/>
+            <asp:Label ID="lblNametab3" runat="server" Text="姓名" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtNametab3" runat="server" Enabled="false" Visible="false"></asp:TextBox>&nbsp&nbsp&nbsp&nbsp
+            <asp:Label ID="lblPhonetab3" runat="server" Text="手機" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtEmailtab3" runat="server" Enabled="false" Visible="false"></asp:TextBox><br />
+            <br />
+            <asp:Label ID="lblEmailtab3" runat="server" Text="Email" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtPhonetab3" runat="server" Enabled="false" Visible="false"></asp:TextBox>&nbsp&nbsp&nbsp&nbsp
+            <asp:Label ID="lblAgetab3" runat="server" Text="年齡" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtAgetab3" runat="server" Enabled="false" Visible="false"></asp:TextBox><br />
+            <asp:Label ID="lblDatetab3" runat="server" Text="填寫時間" Visible="false"></asp:Label>&nbsp<asp:Label ID="lblCreateTime" runat="server" Visible="false"></asp:Label><br />
+            <br />
+            <asp:PlaceHolder ID="PHtab3" runat="server"></asp:PlaceHolder>
+            <br />
             <asp:Button ID="btnReturntab3" runat="server" Text="返回" OnClick="btnReturntab3_Click1" />
         </div>
         <div id="tabs-4">

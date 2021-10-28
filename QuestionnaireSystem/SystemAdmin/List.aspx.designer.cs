@@ -15,31 +15,31 @@ namespace QuestionnaireSystem.SystemAdmin
     {
 
         /// <summary>
-        /// txtTitle コントロール。
+        /// tbSearch コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTitle;
+        protected global::System.Web.UI.WebControls.TextBox tbSearch;
 
         /// <summary>
-        /// txtStartTime コントロール。
+        /// txtDatetimeStart コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtStartTime;
+        protected global::System.Web.UI.WebControls.TextBox txtDatetimeStart;
 
         /// <summary>
-        /// txtEndTime コントロール。
+        /// txtDatetimeEnd コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEndTime;
+        protected global::System.Web.UI.WebControls.TextBox txtDatetimeEnd;
 
         /// <summary>
         /// btnSearch コントロール。
@@ -49,6 +49,15 @@ namespace QuestionnaireSystem.SystemAdmin
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSearch;
+
+        /// <summary>
+        /// btnDel コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDel;
 
         /// <summary>
         /// btnCreate1 コントロール。

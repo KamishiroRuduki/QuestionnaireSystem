@@ -77,5 +77,26 @@ namespace QuestionnaireSystem
                
             }
         }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            var searchText = this.tbSearch.Text;
+            if (searchText == "" && this.txtDatetimeStart.Text == "" && this.txtDatetimeEnd.Text == "")
+                return;
+            DateTime searchTimeStart = DateTime.MinValue;
+            DateTime searchTimeEnd = DateTime.MaxValue;
+            if (this.txtDatetimeStart.Text != "")
+                searchTimeStart = Convert.ToDateTime(this.txtDatetimeStart.Text);
+            if (this.txtDatetimeEnd.Text != "")
+                searchTimeEnd = Convert.ToDateTime(this.txtDatetimeEnd.Text);
+            var searchList = QuestionnaireManger.GetQuestionnaireListBySearch(searchText, searchTimeStart, searchTimeEnd);
+            if (searchList.Count == 0)
+            {
+                Response.Write($"<Script language='JavaScript'>alert('查無資料'); </Script>");
+                return;
+            }
+            this.QuestionnaireView.DataSource = searchList;
+            this.QuestionnaireView.DataBind();
+        }
     }
 }

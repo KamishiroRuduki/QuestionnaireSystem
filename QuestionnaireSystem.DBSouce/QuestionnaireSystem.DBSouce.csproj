@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="AccountManger.cs" />
     <Compile Include="AnswerManger.cs" />
+    <Compile Include="CommonQuestionManager.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="OptionManger.cs" />
     <Compile Include="PersonManger.cs" />

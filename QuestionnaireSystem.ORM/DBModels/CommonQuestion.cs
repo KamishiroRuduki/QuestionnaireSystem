@@ -6,14 +6,10 @@ namespace QuestionnaireSystem.ORM.DBModels
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Question")]
-    public partial class Question
+    [Table("CommonQuestion")]
+    public partial class CommonQuestion
     {
-        public Guid ID { get; set; }
-
-        public Guid QuestionnaireID { get; set; }
-
-        public int Number { get; set; }
+        public int ID { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -24,10 +20,10 @@ namespace QuestionnaireSystem.ORM.DBModels
         [StringLength(1000)]
         public string QusetionOption { get; set; }
 
-        public int IsCommon { get; set; }
-
-        public bool IsMust { get; set; }
+        public int IsChange { get; set; }
 
         public bool IsDel { get; set; }
+
+        public int Number { get; set; }
     }
 }

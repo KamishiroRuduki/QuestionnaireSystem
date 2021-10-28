@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace QuestionnaireSystem.DBSouce
 {
-    public class QuestionManger
+    public class CommonQuestionManager
     {
-        public static List<Question> GetQuestionsListByQuestionnaireID(Guid questionnaireid)
+        public static List<CommonQuestion> GetCommonQuestionsList()
         {
             try
             {
                 using (ContextModel context = new ContextModel())
                 {
                     var query =
-                        (from item in context.Questions
-                         where item.QuestionnaireID == questionnaireid && item.IsDel == false
-                         orderby item.Number 
+                        (from item in context.CommonQuestions
+                         where  item.IsDel == false
+                         orderby item.ID
                          select item);
 
                     var list = query.ToList();
@@ -32,14 +32,15 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-        public static Question GetQuestionByQuestionID(Guid questionid)
+
+        public static CommonQuestion GetCommonQuestionByID(int questionid)
         {
             try
             {
                 using (ContextModel context = new ContextModel())
                 {
                     var query =
-                        (from item in context.Questions
+                        (from item in context.CommonQuestions
                          where item.ID == questionid
                          select item);
 
@@ -54,14 +55,13 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-
-        public static void CreateQuestion(Question question)
+        public static void CreateCommonQuestion(CommonQuestion question)
         {
             try
             {
                 using (ContextModel context = new ContextModel())
                 {
-                    context.Questions.Add(question);
+                    context.CommonQuestions.Add(question);
                     context.SaveChanges();
                 }
             }
@@ -72,15 +72,15 @@ namespace QuestionnaireSystem.DBSouce
             }
         }
 
-        public static void UpdateQuestion(Guid questionid, Question question)
+        public static void UpdateCommonQuestion(int id, CommonQuestion question)
         {
             try
             {
                 using (ContextModel context = new ContextModel())
                 {
                     var query =
-                        (from item in context.Questions
-                         where item.ID == questionid
+                        (from item in context.CommonQuestions
+                         where item.ID == id
                          select item);
 
                     var list = query.FirstOrDefault();
@@ -88,8 +88,7 @@ namespace QuestionnaireSystem.DBSouce
                     {
                         list.Name = question.Name;
                         list.Type = question.Type;
-                        list.QusetionOption = question.QusetionOption;
-                        list.IsMust = question.IsMust;
+                        list.QusetionOption = question.QusetionOption;                        
                     }
                     context.SaveChanges();
                 }
@@ -100,15 +99,15 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-        public static void DelQuestion(Guid questionnaireid, int id)//找到那張問卷的第幾個問題
+        public static void DelCommonQuestion( int id)//找到那張問卷的第幾個問題
         {
             try
             {
                 using (ContextModel context = new ContextModel())
                 {
                     var query =
-                        (from item in context.Questions
-                         where item.Number == id && item.QuestionnaireID == questionnaireid
+                        (from item in context.CommonQuestions
+                         where item.ID == id 
                          select item);
 
                     var list = query.FirstOrDefault();

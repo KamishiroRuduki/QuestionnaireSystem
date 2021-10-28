@@ -14,6 +14,7 @@ namespace QuestionnaireSystem.ORM.DBModels
 
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
+        public virtual DbSet<CommonQuestion> CommonQuestions { get; set; }
         public virtual DbSet<Option> Options { get; set; }
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Question> Questions { get; set; }

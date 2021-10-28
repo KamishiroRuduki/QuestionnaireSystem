@@ -17,6 +17,7 @@ namespace QuestionnaireSystem.DBSouce
                 {
                     var query =
                         (from item in context.Questionnaires
+                         where item.IsStart == 1
                          orderby item.ID descending
                          select item);
                     
@@ -97,6 +98,61 @@ namespace QuestionnaireSystem.DBSouce
             catch (Exception ex)
             {
                 Logger.WriteLog(ex);
+
+            }
+        }
+        /// <summary>
+        /// 假刪除
+        /// </summary>
+        /// <param name="questionnaireid"></param>
+        public static void DelQuestionnaire(int id)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.Questionnaires
+                         where item.ID == id
+                         select item);
+
+                    var list = query.FirstOrDefault();
+                    if (list != null)
+                    {
+                        list.IsStart = 0;
+                    }
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+
+            }
+        }
+
+        public static List<Questionnaire> GetQuestionnaireListBySearch(string searchText, DateTime startTime, DateTime endTime)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query = (from item in context.Questionnaires
+                                  where item.Title.Contains(@searchText)
+                                  orderby item.ID descending
+                                  select item).Intersect
+                                 (from item2 in context.Questionnaires
+                                  where item2.IsStart == 1 && item2.StartTime > startTime && item2.EndTime < endTime
+                                  select item2);
+
+                    var list = query.ToList();
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
 
             }
         }

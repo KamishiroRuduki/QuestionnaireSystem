@@ -2,11 +2,37 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-     <div>
-       問卷標題:&nbsp&nbsp<asp:TextBox ID="txtTitle" runat="server" Width="337px"></asp:TextBox><br/>
-       開始/結束&nbsp<asp:TextBox ID="txtStartTime" runat="server"></asp:TextBox>&nbsp
-                  <asp:TextBox ID="txtEndTime" runat="server"></asp:TextBox>&nbsp&nbsp<asp:Button ID="btnSearch" runat="server" Text="搜尋" />
-   </div><br/>
+     <div class="container" style="border: 3px #000000 solid;">
+        <img src="/img/magnifier.png" width="50" height="50" />
+        <table>
+            <tr>
+                <asp:TextBox runat="server" ID="tbSearch" class="form-control" placeholder="請輸入搜尋"></asp:TextBox>
+            </tr>
+            <tr>
+                <td>
+                    <img src="/img/calendar.png" width="50" height="50" /></td>
+                <td>
+                    <table></table>
+                    <label>選擇起始日期：</label>
+                    <div class='input-group date' id='datetimepickerStart'>
+                        <asp:TextBox type="text" TextMode="Date" CssClass="form-control" ID="txtDatetimeStart" runat="server"></asp:TextBox>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <label>選擇結束日期：</label>
+                    <div class='input-group date' id='datetimepickerEnd'>
+                        <asp:TextBox type='text' TextMode="Date" CssClass="form-control" ID="txtDatetimeEnd" runat="server"></asp:TextBox>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <asp:Button ID="btnSearch" runat="server" CssClass="btn btn-outline-success" Text="搜尋" OnClick="btnSearch_Click" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
     
     <div>
         <asp:GridView ID="QuestionnaireView" runat="server" AutoGenerateColumns="False" CellPadding="10" AllowPaging="True" OnPageIndexChanging="QuestionnaireView_PageIndexChanging" OnRowDataBound="QuestionnaireView_RowDataBound">

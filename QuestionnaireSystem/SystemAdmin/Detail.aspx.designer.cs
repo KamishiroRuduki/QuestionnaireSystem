@@ -87,6 +87,24 @@ namespace QuestionnaireSystem.SystemAdmin
         protected global::System.Web.UI.WebControls.DropDownList CommonDDList;
 
         /// <summary>
+        /// btnCommonQusetion コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCommonQusetion;
+
+        /// <summary>
+        /// LinkButton1 コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+
+        /// <summary>
         /// txtQusetion コントロール。
         /// </summary>
         /// <remarks>
@@ -130,6 +148,15 @@ namespace QuestionnaireSystem.SystemAdmin
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAdd;
+
+        /// <summary>
+        /// btnDeltab2 コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDeltab2;
 
         /// <summary>
         /// QusetionView コントロール。
