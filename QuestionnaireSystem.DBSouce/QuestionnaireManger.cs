@@ -89,7 +89,7 @@ namespace QuestionnaireSystem.DBSouce
                         list.EndTime = questionnaire.EndTime;
                         list.Caption = questionnaire.Caption;
                         list.IsStart = questionnaire.IsStart;
-                        list.State = list.State;
+                        list.State = questionnaire.State;
                     }
                     context.SaveChanges();
                 }

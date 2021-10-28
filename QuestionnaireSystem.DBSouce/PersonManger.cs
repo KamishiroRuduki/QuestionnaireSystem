@@ -78,6 +78,7 @@ namespace QuestionnaireSystem.DBSouce
                     var query =
                         (from item in context.People
                          where item.QuestionnaireID == questionnaireid
+                         orderby item.CreateDate descending
                          select item);
 
                     var list = query.ToList();

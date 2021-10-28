@@ -59,6 +59,42 @@ namespace QuestionnaireSystem.SystemAdmin
                             this.QusetionView.DataSource = list3;
                             this.QusetionView.DataBind();
                         }
+
+                        for (int i = 0; i < list2.Count; i++)
+                        {
+                            Literal quesname = new Literal();
+                            quesname.Text = (i + 1).ToString() + "." + list2[i].Name;
+                            quesname.Text += "<br/>";
+                            PHtab4.Controls.Add(quesname);
+                            Literal litAnswer = new Literal();
+                            if (list2[i].Type == 0 || list2[i].Type == 1)
+                            {
+                                var option = OptionManger.GetStaticByQuestionID(list2[i].ID);
+                                var sum = OptionManger.GetOptionTotal(list2[i].ID);
+                                for (int j = 0; j < option.Count; j++)
+                                {
+                                    double percent = 0;
+                                    string percentStr = "0";
+                                    if (sum != 0)
+                                    {
+                                        percent = (((double)option[j].Sum / (double)sum) * 100);
+                                        percentStr = percent.ToString("0.00");
+                                    }
+                                    litAnswer.Text += "&nbsp&nbsp";
+                                    litAnswer.Text += $"{option[j].QuestionOption} {percentStr}% ({option[j].Sum})";
+                                    litAnswer.Text += "<br/>";
+
+                                }
+
+                            }
+                            else
+                            {
+                                litAnswer.Text = "  -";
+                            }
+                            litAnswer.Text += "</br></br>";
+                            PHtab4.Controls.Add(litAnswer);
+                        }
+
                     }
                     //填寫資料
                     if (personList != null)
@@ -99,6 +135,7 @@ namespace QuestionnaireSystem.SystemAdmin
                             }
                         }
                     }
+                    //點選前往，顯示該回答者的回答跟資料
                     if (this.Request.QueryString["PersonID"] != null)
                     {
                         this.PersonView.Visible = false;
@@ -216,7 +253,7 @@ namespace QuestionnaireSystem.SystemAdmin
                 Response.Write($"<Script language='JavaScript'>alert('單選、複選方塊答案欄不能為空'); location.href='/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2'; </Script>");
                 return;
             }
-            List<Question> list3 = new List<Question>();
+            List<Question> list3 = new List<Question>(); //新的問題List存放session用
             if (HttpContext.Current.Session["QusetionList"] == null)
             {
                 list3 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
@@ -255,7 +292,7 @@ namespace QuestionnaireSystem.SystemAdmin
                 Guid sessionQuesid = questionIDstr.ToGuid();
                 for (int i = 0; i < list3.Count; i++)
                 {                  
-                    if (Guid.Equals(sessionQuesid, list3[i].ID))
+                    if (Guid.Equals(sessionQuesid, list3[i].ID)) //找到符合的那一筆做更新
                     {
                         list3[i].Name = txtQusetion.Text;
                         list3[i].Type = type;
@@ -435,6 +472,13 @@ namespace QuestionnaireSystem.SystemAdmin
         {
             PersonView.PageIndex = e.NewPageIndex;
             this.PersonView.DataBind();
+        }
+
+
+        protected void btnReturntab3_Click1(object sender, EventArgs e)
+        {
+            string idtext = this.Request.QueryString["ID"];
+            Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-3");
         }
     }
 }

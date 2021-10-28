@@ -39,9 +39,29 @@ namespace QuestionnaireSystem
             {
                 Label lblFormState = row.FindControl("lblFormState") as Label;
                 Label lblFormTitle = row.FindControl("lblFormTitle") as Label;
+                Label lblEndTime = row.FindControl("lblEndTime") as Label;
                 var rowData = row.DataItem as Questionnaire;
                 //var drFormState = (DataRowView)row.DataItem ;
                 //int FormState = drFormState.Row.Field<int>("State");
+                string datetime = "2999-12-31";
+                DateTime maxDate = Convert.ToDateTime(datetime);
+                if (rowData.EndTime > maxDate)
+                {
+                    lblEndTime.Text = "-";
+                }
+                else
+                {
+                    lblEndTime.Text = rowData.EndTime.ToString("yyyy-MM-dd");
+
+                }
+                if (rowData.EndTime < DateTime.Now || rowData.StartTime > DateTime.Now)
+                {
+                    rowData.State = 0;
+                }
+                if(rowData.StartTime < rowData.StartTime && rowData.State == 0 )
+                {
+                    rowData.State = 1;
+                }
                 switch (rowData.State)
                 {
                     case 0:

@@ -10,18 +10,24 @@
     
     <div>
         <asp:Button ID="btnCreate1" runat="server" Text="新增" OnClick="btnCreate1_Click" /><br />
-        <asp:GridView ID="QuestionnaireView" runat="server" AutoGenerateColumns="False" CellPadding="10" AllowPaging="True" OnPageIndexChanging="QuestionnaireView_PageIndexChanging">
+        <asp:GridView ID="QuestionnaireView" runat="server" AutoGenerateColumns="False" CellPadding="10" AllowPaging="True" OnPageIndexChanging="QuestionnaireView_PageIndexChanging" OnRowDataBound="QuestionnaireView_RowDataBound1">
             <Columns>
                 <asp:BoundField DataField="ID" HeaderText="#" />
                 <asp:HyperLinkField DataNavigateUrlFields="QuestionnaireID" DataNavigateUrlFormatString="\SystemAdmin\Detail.aspx?ID={0}" DataTextField="Title" HeaderText="問卷" />
                 <asp:TemplateField HeaderText="狀態">
                     <ItemTemplate>
-                        <%# ((int)Eval("State") == 0) ? "已關閉" : "開放" %>
+                       <%--  <%# ((int)Eval("State") == 0) ? "開放" : "已關閉" %> --%>
+                        <asp:Label ID="lblFormState" runat="server" Text="Label"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
                 
                 <asp:BoundField DataField="StartTime" HeaderText="開始時間" DataFormatString="{0:yyyy/MM/dd}" />
-                <asp:BoundField DataField="EndTime" HeaderText="結束時間" DataFormatString="{0:yyyy/MM/dd}" />
+                <asp:TemplateField HeaderText="結束時間">
+                    <ItemTemplate>
+                       <%--  <%# ((int)Eval("State") == 0) ? "開放" : "已關閉" %> --%>
+                        <asp:Label ID="lblEndTime" runat="server" Text="Label"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:HyperLinkField DataNavigateUrlFields="ID" DataNavigateUrlFormatString="\SystemAdmin\Detail.aspx?ID={0}#tabs-4" HeaderText="觀看統計" Text="前往" />
             </Columns>
 

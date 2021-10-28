@@ -26,7 +26,12 @@
                 </asp:TemplateField>
                 
                 <asp:BoundField DataField="StartTime" HeaderText="開始時間" DataFormatString="{0:yyyy/MM/dd}" />
-                <asp:BoundField DataField="EndTime" HeaderText="結束時間" DataFormatString="{0:yyyy/MM/dd}" />
+                <asp:TemplateField HeaderText="結束時間">
+                    <ItemTemplate>
+                       <%--  <%# ((int)Eval("State") == 0) ? "開放" : "已關閉" %> --%>
+                        <asp:Label ID="lblEndTime" runat="server" Text="Label"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:HyperLinkField DataNavigateUrlFields="QuestionnaireID" DataNavigateUrlFormatString="\static.aspx?ID={0}" HeaderText="觀看統計" Text="前往" />
             </Columns>
 

@@ -87,10 +87,12 @@
             <asp:Label ID="lblEmailtab3" runat="server" Text="Email" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtPhonetab3" runat="server"  Enabled="false"  Visible="false"></asp:TextBox>&nbsp&nbsp&nbsp&nbsp
             <asp:Label ID="lblAgetab3" runat="server" Text="年齡" Visible="false"></asp:Label>&nbsp&nbsp<asp:TextBox ID="txtAgetab3" runat="server"  Enabled="false"  Visible="false"></asp:TextBox><br/>
             <asp:Label ID="lblDatetab3" runat="server" Text="填寫時間" Visible="false"></asp:Label>&nbsp<asp:Label ID="lblCreateTime" runat="server" Visible="false" ></asp:Label><br/><br/>
-            <asp:PlaceHolder ID="PHtab3" runat="server"></asp:PlaceHolder>
+            <asp:PlaceHolder ID="PHtab3" runat="server"></asp:PlaceHolder><br/>
+            <asp:Button ID="btnReturntab3" runat="server" Text="返回" OnClick="btnReturntab3_Click1" />
         </div>
         <div id="tabs-4">
             <p>統計</p>
+            <asp:PlaceHolder ID="PHtab4" runat="server"></asp:PlaceHolder>
         </div>
     </div>
 </asp:Content>

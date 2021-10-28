@@ -19,10 +19,10 @@ namespace QuestionnaireSystem.ORM.DBModels
         public string Title { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime? StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime? EndTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         [StringLength(500)]
         public string Caption { get; set; }

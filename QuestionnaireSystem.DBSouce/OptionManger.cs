@@ -105,5 +105,27 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
+
+        public static int GetOptionTotal(Guid questionnid)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.Statics
+                         where item.QuestionID == questionnid
+                         select item.Sum).Sum();
+
+                    return query;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return 0;
+
+            }
+        }
     }
 }
