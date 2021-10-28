@@ -43,7 +43,27 @@ namespace QuestionnaireSystem
                         }
                         
                     }
-
+                    //檢查姓名、mail、電話、年齡有沒有session資料，有就做回填的動作
+                    if (HttpContext.Current.Session["Name"] != null)
+                    {
+                        this.txtName.Text = HttpContext.Current.Session["Name"] as string;
+                      //  HttpContext.Current.Session["Name"] = null;
+                    }
+                    if (HttpContext.Current.Session["Phone"] != null)
+                    {
+                        this.txtPhone.Text = HttpContext.Current.Session["Phone"] as string;
+                      //  HttpContext.Current.Session["Phone"] = null;
+                    }
+                    if (HttpContext.Current.Session["Email"] != null)
+                    {
+                        this.txtEmail.Text = HttpContext.Current.Session["Email"] as string;
+                      //  HttpContext.Current.Session["Email"] = null;
+                    }
+                    if (HttpContext.Current.Session["Age"] != null)
+                    {
+                        this.txtAge.Text = HttpContext.Current.Session["Age"] as string;
+                      //  HttpContext.Current.Session["Age"] = null;
+                    }
 
                 }
                 else
@@ -53,23 +73,7 @@ namespace QuestionnaireSystem
                 }
 
             }
-            //檢查姓名、mail、電話、年齡有沒有session資料，有就做回填的動作
-            if (HttpContext.Current.Session["Name"] != null)
-            {
-                this.txtName.Text = HttpContext.Current.Session["Name"] as string;
-            }
-            if (HttpContext.Current.Session["Phone"] != null)
-            {
-                this.txtPhone.Text = HttpContext.Current.Session["Phone"] as string;
-            }
-            if (HttpContext.Current.Session["Email"] != null)
-            {
-                this.txtEmail.Text = HttpContext.Current.Session["Email"] as string;
-            }
-            if (HttpContext.Current.Session["Age"] != null)
-            {
-                this.txtAge.Text = HttpContext.Current.Session["Age"] as string;
-            }
+
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -88,6 +92,11 @@ namespace QuestionnaireSystem
             {
                 if(this.Request.Form[list2[i].ID.ToString()] == null)
                 {
+                    if(list2[i].IsMust == true)
+                    {
+                        Response.Write($"<Script language='JavaScript'>alert('有必填的問題沒填'); </Script>");                        
+                        return;
+                    }
                     arr[i] = " ";//測試用不用理它
                     anwser += " ";//假如該題未填，此題答案給它一格空格
                     anwser += ";";//答案分割用
@@ -95,7 +104,7 @@ namespace QuestionnaireSystem
                 else {
                     arr[i] = this.Request.Form[list2[i].ID.ToString()];//測試用不用理它
                     //  HttpContext.Current.Session[list2[i].ID.ToString()] = this.Request.Form[list2[i].ID.ToString()];
-                    anwser += this.Request.Form[list2[i].ID.ToString()];//Request.Form是抓前端控制項輸入的值，[]內要用給你要抓的控制項的name，我的話是用問題的ID
+                    anwser += this.Request.Form[list2[i].ID.ToString()];//抓前端控制項輸入的值
                     if (i < list2.Count-1)//最後一題不放分號
                     anwser += ";";
                 }
@@ -111,20 +120,23 @@ namespace QuestionnaireSystem
                 HttpContext.Current.Session["Age"] = age;
             HttpContext.Current.Session["Answer"] = anwser;
 
-            //檢查是否有漏填，必填選項的檢查我還沒做
+            //檢查是否有漏填
             if (string.IsNullOrWhiteSpace(this.txtName.Text) || string.IsNullOrWhiteSpace(this.txtEmail.Text) || string.IsNullOrWhiteSpace(this.txtPhone.Text) || string.IsNullOrWhiteSpace(this.txtAge.Text))
             {
-                this.ltMsg.Text += "姓名或Email或電話或年齡有漏填<br/>";
+                Response.Write($"<Script language='JavaScript'>alert('姓名或Email或電話或年齡有漏填'); </Script>");
+                //this.ltMsg.Text = "姓名或Email或電話或年齡有漏填<br/>";
                 return;
             }
             if (!PersonManger.IsMailCreated(email, idtext.ToGuid()))
             {
-                this.ltMsg.Text += "此信箱已經被使用過了<br/>";
+                Response.Write($"<Script language='JavaScript'>alert('此信箱已經被使用過了'); </Script>");
+                //this.ltMsg.Text = "此信箱已經被使用過了<br/>";
                 return;
             }
             if (!PersonManger.IsPhoneCreated(phone, idtext.ToGuid()))
             {
-                this.ltMsg.Text = "此手機已經被使用過了<br/>";
+                Response.Write($"<Script language='JavaScript'>alert('此手機已經被使用過了'); </Script>");
+                //this.ltMsg.Text = "此手機已經被使用過了<br/>";
                 return;
             }
             Response.Redirect("/confirm.aspx?ID=" + idtext); //跳至確認頁
