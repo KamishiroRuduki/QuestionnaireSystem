@@ -19,8 +19,9 @@
             return args[strParame]; // Return the object
         }
         $(function () {
-            $("#tabs").tabs();
-            $("#btnDL").click(function () {
+            $("#tabs").tabs();//頁籤
+            
+            $("#btnDL").click(function () { //用AJAX取得CSV檔
                 var ID = getArgs("ID");
               //  var strURL = "http://localhost:2305/Handlers/CsvHandler.ashx?QuestionnaireID=" + ID;
                 var strURL = "/Handlers/CsvHandler.ashx?QuestionnaireID=" + ID;

@@ -63,7 +63,7 @@ namespace QuestionnaireSystem.SystemAdmin
                             this.QusetionView.DataSource = list3;
                             this.QusetionView.DataBind();
                         }
-                        //統計頁
+                        //統計頁，動態產生問題名跟每個回答的統計
                         for (int i = 0; i < list2.Count; i++)
                         {
                             Literal quesname = new Literal();
@@ -106,10 +106,10 @@ namespace QuestionnaireSystem.SystemAdmin
                         this.PersonView.DataSource = personList;
                         this.PersonView.DataBind();
                     }
-                    //假如session有問題的ID，就做回填(編輯問題用)
+                    //檢查session是否有問題的ID(編輯問題用)
                     if (HttpContext.Current.Session["QuestionID"] != null)
-                    {
-                        if (HttpContext.Current.Session["QusetionList"] == null)
+                    {                        
+                        if (HttpContext.Current.Session["QusetionList"] == null)//檢查session是否已經有新的問題List，沒有就從DB撈資料，有就從session拿來做回填
                         {
                             string quesStr = HttpContext.Current.Session["QuestionID"].ToString();
                             var ques = QuestionManger.GetQuestionByQuestionID(quesStr.ToGuid());
@@ -262,9 +262,15 @@ namespace QuestionnaireSystem.SystemAdmin
             }
 
         }
-
+        /// <summary>
+        /// 取消回問題管理頁，並清空session資料
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCanceltab1_Click(object sender, EventArgs e)
         {
+            HttpContext.Current.Session["QuestionID"] = null;
+            HttpContext.Current.Session["QusetionList"] = null;
             Response.Redirect($"/SystemAdmin/list.aspx");
         }
         //----------------------------------------tab-2------------------------------------------------------
@@ -340,7 +346,7 @@ namespace QuestionnaireSystem.SystemAdmin
             if (HttpContext.Current.Session["QuestionID"] == null)
             {
                 int number;
-                if (list3.Count == 0)
+                if (list3.Count == 0)//處理0筆的狀況
                     number = 0;
                 else
                     number = list3[list3.Count-1].Number;
@@ -405,15 +411,15 @@ namespace QuestionnaireSystem.SystemAdmin
                 string idtext = this.Request.QueryString["ID"];
                 var list2 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
                 List<Question> list3 = (List<Question>)HttpContext.Current.Session["QusetionList"];
-                for (int i = 0; i < list2.Count; i++)
+                for (int i = 0; i < list2.Count; i++) //依DB撈出來的LIST長度判斷要做新增還是更新
                 {
-                    if (list3[i].IsCommon != 0)
+                    if (list3[i].IsCommon != 0)//檢查該筆資料是否有更新
                     {
                         list3[i].IsCommon = 0;
                         QuestionManger.UpdateQuestion(list3[i].ID, list3[i]);
                         if (list3[i].Type == 0 || list3[i].Type == 1)
                         {
-                            OptionManger.DeleteOption(list3[i].ID, list3[i].QuestionnaireID);
+                            OptionManger.DeleteOption(list3[i].ID, list3[i].QuestionnaireID);//單選、複選做更新時先刪除static(統計用資料表)內的選項再重新加入
                             char[] AnsChars = { ';' };
                             string[] Ans = list3[i].QusetionOption.Split(AnsChars);
 
@@ -458,7 +464,11 @@ namespace QuestionnaireSystem.SystemAdmin
             else
                 Response.Redirect("/SystemAdmin/list.aspx");
         }
-
+        /// <summary>
+        /// 取消回問題管理頁，並清空session資料
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCanceltab2_Click(object sender, EventArgs e)
         {
             HttpContext.Current.Session["QuestionID"] = null;
@@ -472,7 +482,11 @@ namespace QuestionnaireSystem.SystemAdmin
         {
 
         }
-
+        /// <summary>
+        /// 找到要編輯的問題的ID，並放到session
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void QusetionView_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Upate")
@@ -506,7 +520,11 @@ namespace QuestionnaireSystem.SystemAdmin
             //    txtAnswer.Text = string.Empty;
             //}
         }
-
+        /// <summary>
+        /// 刪除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnDeltab2_Click(object sender, EventArgs e)
         {
             string idtext = this.Request.QueryString["ID"];
@@ -546,14 +564,22 @@ namespace QuestionnaireSystem.SystemAdmin
             Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
         }
         //--------------------------------------tab-3----------------------------------------------------
-
+        /// <summary>
+        /// 分頁
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void PersonView_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             PersonView.PageIndex = e.NewPageIndex;
             this.PersonView.DataBind();
         }
 
-
+        /// <summary>
+        /// 從個人資料返回名單
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnReturntab3_Click1(object sender, EventArgs e)
         {
             string idtext = this.Request.QueryString["ID"];
@@ -571,7 +597,11 @@ namespace QuestionnaireSystem.SystemAdmin
             ////Response.Redirect($"/SystemAdmin/Detail.aspx?ID={idtext}#tabs-2");
 
         }
-
+        /// <summary>
+        /// 常用問題套用
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void LinkButton1_Click(object sender, EventArgs e)
         {
             int commonid;

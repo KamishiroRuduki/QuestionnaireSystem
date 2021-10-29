@@ -9,6 +9,10 @@ namespace QuestionnaireSystem.DBSouce
 {
     public class PersonManger
     {
+        /// <summary>
+        /// 建立回答人
+        /// </summary>
+        /// <param name="person"></param>
         public static void CreatePerson(Person person)
         {
             try
@@ -25,28 +29,37 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
+        ///// <summary>
+        ///// 用ID找到該回答人
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //public static Person GetPerson(Guid id)
+        //{
+        //    try
+        //    {
+        //        using (ContextModel context = new ContextModel())
+        //        {
+        //            var query =
+        //                (from item in context.People
+        //                 where item.ID == id                         
+        //                 select item);
 
-        public static Person GetPerson(string email)
-        {
-            try
-            {
-                using (ContextModel context = new ContextModel())
-                {
-                    var query =
-                        (from item in context.People
-                         where item.Email == email                         
-                         select item);
-
-                    var list = query.FirstOrDefault();
-                    return list;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLog(ex);
-                return null;
-            }
-        }
+        //            var list = query.FirstOrDefault();
+        //            return list;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.WriteLog(ex);
+        //        return null;
+        //    }
+        //}
+        /// <summary>
+        /// 用ID找到該回答人
+        /// </summary>
+        /// <param name="personid"></param>
+        /// <returns></returns>
         public static Person GetPersonbyID(Guid personid)
         {
             try

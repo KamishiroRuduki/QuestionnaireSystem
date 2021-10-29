@@ -54,7 +54,7 @@ namespace QuestionnaireSystem
                     lblEndTime.Text = rowData.EndTime.ToString("yyyy-MM-dd");
 
                 }
-                if (rowData.EndTime < DateTime.Now || rowData.StartTime > DateTime.Now)
+                if (rowData.EndTime < DateTime.Now || rowData.StartTime > DateTime.Now) //當現在時間已經超過結束時間或者還沒到開始時間時自動轉為關閉
                 {
                     rowData.State = 0;
                 }
@@ -73,7 +73,11 @@ namespace QuestionnaireSystem
                
             }
         }
-
+        /// <summary>
+        /// 搜尋
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             var searchText = this.tbSearch.Text;

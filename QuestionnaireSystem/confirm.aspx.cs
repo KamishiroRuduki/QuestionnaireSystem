@@ -64,7 +64,11 @@ namespace QuestionnaireSystem
 
 
         }
-
+        /// <summary>
+        /// 問卷回答送出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             string idtext = this.Request.QueryString["ID"];
@@ -84,7 +88,7 @@ namespace QuestionnaireSystem
             };
             PersonManger.CreatePerson(newperson);
 
-            Person person = PersonManger.GetPerson(HttpContext.Current.Session["Email"].ToString());
+            Person person = PersonManger.GetPersonbyID(newperson.ID);
             if (HttpContext.Current.Session["Answer"] != null)
             {
                 char[] delimiterChars = { ';' };
@@ -98,7 +102,7 @@ namespace QuestionnaireSystem
                         PersonID = person.ID,
                         AnswerOption = answerArr[i]
                     };
-                    AnswerManger.CreateAnswer(answer);
+                    AnswerManger.CreateAnswer(answer); //建立回答
 
                     if (list2[i].Type == 0 && !string.IsNullOrWhiteSpace(answerArr[i]))
                     {
