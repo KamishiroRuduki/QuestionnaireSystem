@@ -13,12 +13,13 @@ namespace QuestionnaireSystem.SystemAdmin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            HttpContext.Current.Session["QuestionID"] = null;
-            HttpContext.Current.Session["QusetionList"] = null;
+            Session.Abandon();//只要到list頁就先清空session
+            //HttpContext.Current.Session["QuestionID"] = null;
+            //HttpContext.Current.Session["QusetionList"] = null;
             if (!IsPostBack)
             {
-                //  Session.Abandon();
-                
+                  
+
                 var list = QuestionnaireManger.GetQuestionnaireList();
                 if (list.Count > 0)
                 {

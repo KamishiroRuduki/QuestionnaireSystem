@@ -26,6 +26,9 @@
                     <td colspan="2">
                         <h1>後台-問卷管理</h1>
                     </td>
+                    <td>
+                        <a class="nav-link active" aria-current="page" href="/index.aspx">回首頁</a>
+                    </td>
                 </tr>
                 <tr>
                     <td valign="Top">

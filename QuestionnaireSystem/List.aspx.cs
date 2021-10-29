@@ -16,7 +16,7 @@ namespace QuestionnaireSystem
         {
             if (!IsPostBack)
             {
-                
+                Session.Abandon(); //只要到list頁就先清空session
                 var list = QuestionnaireManger.GetQuestionnaireList();
                 if (list.Count > 0)
                 {
