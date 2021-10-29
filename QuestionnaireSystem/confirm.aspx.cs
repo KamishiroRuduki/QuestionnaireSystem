@@ -104,7 +104,7 @@ namespace QuestionnaireSystem
                     };
                     AnswerManger.CreateAnswer(answer); //建立回答
 
-                    if (list2[i].Type == 0 && !string.IsNullOrWhiteSpace(answerArr[i]))
+                    if (list2[i].Type == 0 && !string.IsNullOrWhiteSpace(answerArr[i]))//單選
                     {
                         //Static staticSum = new Static()
                         //{
@@ -113,10 +113,10 @@ namespace QuestionnaireSystem
                         //    QuestionOption = answerArr[i]
 
                         //};
-                        OptionManger.UpdateStaticSum(idtext.ToGuid(), list2[i].ID, answerArr[i]);
+                        OptionManger.UpdateStaticSum(idtext.ToGuid(), list2[i].ID, answerArr[i]);//回答的選項統計數+1
 
                     }
-                    if (list2[i].Type == 1 && !string.IsNullOrWhiteSpace(answerArr[i]))
+                    if (list2[i].Type == 1 && !string.IsNullOrWhiteSpace(answerArr[i]))//複選
                     {
                         //Static staticSum = new Static()
                         //{
@@ -129,13 +129,14 @@ namespace QuestionnaireSystem
                         string[] checkboxAns = answerArr[i].Split(checkboxAnsChars);
                         for (int j = 0; j < checkboxAns.Length; j++)
                         {
-                            OptionManger.UpdateStaticSum(idtext.ToGuid(), list2[i].ID, checkboxAns[j]);
+                            OptionManger.UpdateStaticSum(idtext.ToGuid(), list2[i].ID, checkboxAns[j]);//回答的選項統計數+1
 
                         }
                     }
                 }
 
             }
+            //清空session
             HttpContext.Current.Session["Name"] = null;
             HttpContext.Current.Session["Email"] = null;
             HttpContext.Current.Session["Phone"] = null;

@@ -81,7 +81,11 @@ namespace QuestionnaireSystem.DBSouce
                 return null;
             }
         }
-
+        /// <summary>
+        /// 用問卷ID撈出該問卷的所有回答人
+        /// </summary>
+        /// <param name="questionnaireid"></param>
+        /// <returns></returns>
         public static List<Person> GetPersonList(Guid questionnaireid)
         {
             try
@@ -104,7 +108,11 @@ namespace QuestionnaireSystem.DBSouce
                 return null;
             }
         }
-
+        /// <summary>
+        /// 找到該問卷的所有回答人的資料、所有的問題跟所做的回答
+        /// </summary>
+        /// <param name="questionnaireid"></param>
+        /// <returns></returns>
         public static List<PersonAnswerModel> GetPersonAnswerList(Guid questionnaireid)
         {
             try
@@ -144,6 +152,12 @@ namespace QuestionnaireSystem.DBSouce
                 return null;
             }
         }
+        /// <summary>
+        /// 檢查mail是否重複
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="questionnaireid"></param>
+        /// <returns></returns>
         public static bool IsMailCreated(string email, Guid questionnaireid)
         {
 

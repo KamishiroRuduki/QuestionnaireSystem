@@ -36,7 +36,7 @@ namespace QuestionnaireSystem
                     
                     for (int i =0; i<list2.Count; i++)
                     {
-                        if( list2[i].Type == 0 || list2[i].Type == 1)
+                        if( list2[i].Type == 0 || list2[i].Type == 1) //單選複選才繪製圓餅圖
                         {
                             Label quesname = new Label();
                             quesname.Text = (i+1).ToString() +"."+list2[i].Name;
