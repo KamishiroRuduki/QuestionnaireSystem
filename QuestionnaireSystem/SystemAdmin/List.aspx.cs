@@ -83,7 +83,11 @@ namespace QuestionnaireSystem.SystemAdmin
 
             }
         }
-
+        /// <summary>
+        /// 將選到的問卷刪除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnDel_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < QuestionnaireView.Rows.Count; i++)

@@ -9,6 +9,11 @@ namespace QuestionnaireSystem.DBSouce
 {
     public class QuestionManger
     {
+        /// <summary>
+        /// 找到該問卷的所有問題的資料
+        /// </summary>
+        /// <param name="questionnaireid"></param>
+        /// <returns></returns>
         public static List<Question> GetQuestionsListByQuestionnaireID(Guid questionnaireid)
         {
             try
@@ -32,6 +37,11 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
+        /// <summary>
+        /// 依問題ID抓該筆問題的資料
+        /// </summary>
+        /// <param name="questionid"></param>
+        /// <returns></returns>
         public static Question GetQuestionByQuestionID(Guid questionid)
         {
             try
@@ -54,7 +64,10 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-
+        /// <summary>
+        /// 新增問題
+        /// </summary>
+        /// <param name="question"></param>
         public static void CreateQuestion(Question question)
         {
             try
@@ -71,7 +84,11 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-
+        /// <summary>
+        /// 更新問題
+        /// </summary>
+        /// <param name="questionid"></param>
+        /// <param name="question"></param>
         public static void UpdateQuestion(Guid questionid, Question question)
         {
             try
@@ -100,6 +117,11 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
+        /// <summary>
+        /// 將該問題設為已刪除(假刪除)
+        /// </summary>
+        /// <param name="questionnaireid"></param>
+        /// <param name="id"></param>
         public static void DelQuestion(Guid questionnaireid, int id)//找到那張問卷的第幾個問題
         {
             try

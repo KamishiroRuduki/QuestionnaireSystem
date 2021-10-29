@@ -9,6 +9,10 @@ namespace QuestionnaireSystem.DBSouce
 {
     public class QuestionnaireManger
     {
+        /// <summary>
+        /// 找到沒被設為已刪除的問卷
+        /// </summary>
+        /// <returns></returns>
         public static List<Questionnaire> GetQuestionnaireList()
         {
             try
@@ -32,7 +36,11 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-
+        /// <summary>
+        /// 用抓該筆問卷資料
+        /// </summary>
+        /// <param name="questionnaireid"></param>
+        /// <returns></returns>
         public static Questionnaire GETQuestionnaire(Guid questionnaireid)
         {
             try
@@ -54,6 +62,10 @@ namespace QuestionnaireSystem.DBSouce
                 return null;
             }
         }
+        /// <summary>
+        /// 新增問卷
+        /// </summary>
+        /// <param name="questionnaire"></param>
         public static void CreateQuestionnaire(Questionnaire questionnaire)
         {
             try
@@ -70,7 +82,11 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-
+        /// <summary>
+        /// 更新問卷資料
+        /// </summary>
+        /// <param name="questionnaireid"></param>
+        /// <param name="questionnaire"></param>
         public static void UpdateQuestionnaire(Guid questionnaireid,Questionnaire questionnaire)
         {
             try
@@ -102,7 +118,7 @@ namespace QuestionnaireSystem.DBSouce
             }
         }
         /// <summary>
-        /// 假刪除
+        /// 將該筆問卷設為已刪除(假刪除)
         /// </summary>
         /// <param name="questionnaireid"></param>
         public static void DelQuestionnaire(int id)
@@ -130,7 +146,13 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-
+        /// <summary>
+        /// 問卷搜尋
+        /// </summary>
+        /// <param name="searchText"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
         public static List<Questionnaire> GetQuestionnaireListBySearch(string searchText, DateTime startTime, DateTime endTime)
         {
             try

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace QuestionnaireSystem.DBSouce
 {
+    /// <summary>
+    /// 常用問題管理
+    /// </summary>
     public class CommonQuestionManager
     {
         public static List<CommonQuestion> GetCommonQuestionsList()

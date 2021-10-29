@@ -9,6 +9,10 @@ namespace QuestionnaireSystem.DBSouce
 {
     public class AnswerManger
     {
+        /// <summary>
+        /// 將回答寫進DB
+        /// </summary>
+        /// <param name="answer"></param>
         public static void CreateAnswer(Answer answer)
         {
             try
@@ -25,7 +29,12 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-
+        /// <summary>
+        /// 依問題ID，該到該回答者在該問題所做的回答
+        /// </summary>
+        /// <param name="quesid"></param>
+        /// <param name="personid"></param>
+        /// <returns></returns>
         public static Answer GetAnswer(Guid quesid, Guid personid)
         {
             try

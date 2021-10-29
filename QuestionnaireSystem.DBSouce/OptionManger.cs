@@ -9,6 +9,12 @@ namespace QuestionnaireSystem.DBSouce
 {
     public class OptionManger
     {
+        /// <summary>
+        /// 找到該選項並將統計數+1
+        /// </summary>
+        /// <param name="questionnaireid"></param>
+        /// <param name="questionid"></param>
+        /// <param name="option"></param>
         public static void UpdateStaticSum(Guid questionnaireid, Guid questionid, string option)
         {
             try
@@ -34,7 +40,11 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-
+        /// <summary>
+        /// 找到該問題的所有選項
+        /// </summary>
+        /// <param name="questionnid"></param>
+        /// <returns></returns>
         public static List<Static> GetStaticByQuestionID(Guid questionnid)
         {
             try
@@ -58,6 +68,10 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
+        /// <summary>
+        /// 新增選項
+        /// </summary>
+        /// <param name="option"></param>
         public static void CreateOption(Static option)
         {
             try
@@ -74,7 +88,11 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-
+        /// <summary>
+        /// 刪除選項
+        /// </summary>
+        /// <param name="quesid"></param>
+        /// <param name="questionnaireid"></param>
         public static void DeleteOption(Guid quesid, Guid questionnaireid)
         {
             try
@@ -105,7 +123,11 @@ namespace QuestionnaireSystem.DBSouce
 
             }
         }
-
+        /// <summary>
+        /// 取得該問題的統計總合
+        /// </summary>
+        /// <param name="questionnid"></param>
+        /// <returns></returns>
         public static int GetOptionTotal(Guid questionnid)
         {
             try
