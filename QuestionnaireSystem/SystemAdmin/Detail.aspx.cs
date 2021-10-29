@@ -147,7 +147,7 @@ namespace QuestionnaireSystem.SystemAdmin
                         var thisPerson = PersonManger.GetPersonbyID(personidtext.ToGuid());
                         if (thisPerson != null)
                         {
-                            Button1.Visible = false;
+                            
                             lblNametab3.Visible = true;
                             lblPhonetab3.Visible = true;
                             lblEmailtab3.Visible = true;

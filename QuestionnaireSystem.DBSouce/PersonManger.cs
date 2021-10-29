@@ -91,6 +91,46 @@ namespace QuestionnaireSystem.DBSouce
                 return null;
             }
         }
+
+        public static List<PersonAnswerModel> GetPersonAnswerList(Guid questionnaireid)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query = (from item in context.Questionnaires
+                                 where item.QuestionnaireID == questionnaireid
+                                 join item2 in context.People on item.QuestionnaireID equals item2.QuestionnaireID
+                                 join item4 in context.Answers on item2.ID equals item4.PersonID
+                                 join item3 in context.Questions on item4.QuestionID equals item3.ID where item3.IsDel == false
+                                 select new
+                                 {
+                                     item2.Name,
+                                     item2.Email,
+                                     item2.Phone,
+                                     item2.Age,
+                                     quesName = item3.Name,
+                                     item4.AnswerOption
+                                 });
+
+                    List<PersonAnswerModel> list = query.Select(obj => new PersonAnswerModel()
+                    {
+                        Name = obj.Name,
+                        Email = obj.Email,
+                        Phone =obj.Phone,
+                        Age = obj.Age,
+                        QuestionName = obj.quesName,
+                        Answer = obj.AnswerOption
+                    }).ToList();
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
+            }
+        }
         public static bool IsMailCreated(string email, Guid questionnaireid)
         {
 

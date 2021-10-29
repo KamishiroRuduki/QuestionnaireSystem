@@ -58,10 +58,6 @@ namespace QuestionnaireSystem
                 {
                     rowData.State = 0;
                 }
-                if(rowData.StartTime < rowData.StartTime && rowData.State == 0 )
-                {
-                    rowData.State = 1;
-                }
                 switch (rowData.State)
                 {
                     case 0:

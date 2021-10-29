@@ -4,9 +4,38 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <script>
+        function getArgs(strParame) { //抓Request.QueryString用
+            var args = new Object();
+            var query = location.search.substring(1); // Get query string
+            var pairs = query.split("&"); // Break at ampersand
+            for (var i = 0; i < pairs.length; i++) {
+                var pos = pairs[i].indexOf('='); // Look for "name=value"
+                if (pos == -1) continue; // If not found, skip
+                var argname = pairs[i].substring(0, pos); // Extract the name
+                var value = pairs[i].substring(pos + 1, pairs[i].length); // Extract the value
+                value = decodeURIComponent(value); // Decode it, if needed
+                args[argname] = value; // Store as a property
+            }
+            return args[strParame]; // Return the object
+        }
         $(function () {
             $("#tabs").tabs();
+            $("#btnDL").click(function () {
+                var ID = getArgs("ID");
+                var strURL = "http://localhost:2305/Handlers/CsvHandler.ashx?QuestionnaireID=" + ID;
+                $.ajax({
+                    url: strURL,
+                    type: "POST",
+                    data: {},
+                    success: function (result) {
+
+                    }
+                });
+            });
+
         });
+
+
     </script>
 
     <div id="tabs">
@@ -34,7 +63,7 @@
             <div>
                 種類&nbsp<asp:DropDownList ID="CommonDDList" runat="server" AutoPostBack="false"></asp:DropDownList>
                 <asp:Button ID="btnCommonQusetion" runat="server" Text="套用" OnClick="btnCommonQusetion_Click" Visible="false" />
-                <asp:LinkButton ID="LinkButton1" runat="server" OnClick="LinkButton1_Click" BorderStyle="Solid">套用</asp:LinkButton><br />
+                <asp:LinkButton ID="LinkButton1" runat="server" OnClick="LinkButton1_Click">套用</asp:LinkButton><br />
 
                 問題&nbsp<asp:TextBox ID="txtQusetion" runat="server"></asp:TextBox>&nbsp
             <asp:DropDownList ID="TypeDDList" runat="server" OnSelectedIndexChanged="TypeDDList_SelectedIndexChanged">
@@ -83,7 +112,7 @@
             <asp:Button ID="btnCanceltab2" runat="server" Text="取消" OnClick="btnCanceltab2_Click" /><asp:Button ID="btnSubmittab2" runat="server" Text="送出" OnClick="btnSubmittab2_Click" />
         </div>
         <div id="tabs-3">
-            <asp:Button ID="Button1" runat="server" Text="匯出" />
+            <button type="button" id="btnDL" >匯出</button>
             <asp:GridView ID="PersonView" runat="server" AutoGenerateColumns="False" AllowPaging="True" OnPageIndexChanging="PersonView_PageIndexChanging" CellPadding="10">
                 <Columns>
                     <asp:BoundField DataField="Name" HeaderText="姓名" />
