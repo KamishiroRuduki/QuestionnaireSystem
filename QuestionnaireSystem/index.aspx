@@ -9,7 +9,9 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
+        <div class="entry-content" style="padding-left: 150px;">
+                            <a class="nav-link active" aria-current="page" href="/SystemAdmin/List.aspx">後台問卷管理</a><br/>
+                            <a class="nav-link active" aria-current="page" href="/List.aspx">問卷前台</a>
         </div>
     </form>
 </body>

@@ -22,7 +22,8 @@
             $("#tabs").tabs();
             $("#btnDL").click(function () {
                 var ID = getArgs("ID");
-                var strURL = "http://localhost:2305/Handlers/CsvHandler.ashx?QuestionnaireID=" + ID;
+              //  var strURL = "http://localhost:2305/Handlers/CsvHandler.ashx?QuestionnaireID=" + ID;
+                var strURL = "/Handlers/CsvHandler.ashx?QuestionnaireID=" + ID;
                 $.ajax({
                     url: strURL,
                     type: "POST",
