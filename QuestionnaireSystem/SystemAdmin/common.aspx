@@ -49,7 +49,7 @@
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <ItemTemplate>
-                                <asp:Button ID="btnUpdate" runat="server" Text="編輯" CommandName="Upate" CommandArgument='<%# Eval("Number") %>' />
+                                <asp:Button ID="btnUpdate" runat="server" Text="編輯" CommandName="Upate" CommandArgument='<%# Eval("ID") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

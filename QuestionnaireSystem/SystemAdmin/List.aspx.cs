@@ -13,26 +13,62 @@ namespace QuestionnaireSystem.SystemAdmin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session.Abandon();//只要到list頁就先清空session
+            
             //HttpContext.Current.Session["QuestionID"] = null;
             //HttpContext.Current.Session["QusetionList"] = null;
             if (!IsPostBack)
             {
-                  
+                Session.Abandon();//只要到list頁就先清空session
 
-                var list = QuestionnaireManger.GetQuestionnaireList();
-                if (list.Count > 0)
-                {
-                    this.QuestionnaireView.DataSource = list;
-                    this.QuestionnaireView.DataBind();
-                }
+                //var list = QuestionnaireManger.GetQuestionnaireList();
+                //if (list.Count > 0)
+                //{
+                //    this.QuestionnaireView.DataSource = list;
+                //    this.QuestionnaireView.DataBind();
+                //}
+                QuestionnaireView_DataBind();
+
             }
         }
 
+        private void QuestionnaireView_DataBind()
+        {
+            var list = QuestionnaireManger.GetQuestionnaireList();
+            if (list.Count > 0)
+            {
+                this.QuestionnaireView.DataSource = list;
+                this.QuestionnaireView.DataBind();
+            }
+        }
+
+        private void QuestionnaireView_DataBind( List<Questionnaire> list)
+        {
+            if (list.Count > 0)
+            {
+                this.QuestionnaireView.DataSource = list;
+                this.QuestionnaireView.DataBind();
+            }
+        }
         protected void QuestionnaireView_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             QuestionnaireView.PageIndex = e.NewPageIndex;
-            this.QuestionnaireView.DataBind();
+            //var list = QuestionnaireManger.GetQuestionnaireList();
+            //if (list.Count > 0)
+            //{
+            //    this.QuestionnaireView.DataSource = list;
+            //    this.QuestionnaireView.DataBind();
+            //}
+            if (HttpContext.Current.Session["SearchList"] != null)
+            {
+                var list = (List<Questionnaire>)HttpContext.Current.Session["SearchList"];
+                QuestionnaireView_DataBind(list);
+
+            }
+            else
+            {
+                QuestionnaireView_DataBind();
+            }
+             
         }
 
         protected void QuestionnaireView_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -116,7 +152,11 @@ namespace QuestionnaireSystem.SystemAdmin
         {
             var searchText = this.tbSearch.Text;
             if (searchText == "" && this.txtDatetimeStart.Text == "" && this.txtDatetimeEnd.Text == "")
+            {
+                Response.Redirect($"/SystemAdmin/list.aspx");
                 return;
+            }
+                
             DateTime searchTimeStart = DateTime.MinValue;
             DateTime searchTimeEnd = DateTime.MaxValue;
             if (this.txtDatetimeStart.Text != "")
@@ -129,6 +169,7 @@ namespace QuestionnaireSystem.SystemAdmin
                 Response.Write($"<Script language='JavaScript'>alert('查無資料'); </Script>");
                 return;
             }
+            HttpContext.Current.Session["SearchList"] = searchList;
             this.QuestionnaireView.DataSource = searchList;
             this.QuestionnaireView.DataBind();
 

@@ -45,7 +45,7 @@ namespace QuestionnaireSystem
                             panelChartHolder = new Panel();
                             PlaceHolder1.Controls.Add(panelChartHolder);
                             Literal literal = new Literal();
-                            Bindchart(i, panelChartHolder);
+                            Bindchart(list2[i], panelChartHolder);
 
                         }
                     }
@@ -54,7 +54,7 @@ namespace QuestionnaireSystem
             }
         }
 
-        private void Bindchart( int i, Panel panelChartHolder)
+        private void Bindchart( Question question, Panel panelChartHolder)
         {
             ChartArea mainArea;
             Chart mainChart;
@@ -65,17 +65,21 @@ namespace QuestionnaireSystem
             mainChart = new Chart();
             mainSeries = new Series("MainSeries");
             mainlegend = new Legend("MainLengend");
+            mainArea = new ChartArea("MainArea");
             mainChart.Series.Add(mainSeries);
-            mainChart.Legends.Add(mainlegend);
-            string idtext = this.Request.QueryString["ID"];
-            var list2 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
-            var list3 = OptionManger.GetStaticByQuestionID(list2[i].ID);
-            string[] XPointMember = new string[list3.Count];
-            int[] YPointMember = new int[list3.Count];
-            Series ser = new Series(list2[i].Name);
-            ser.Name = list2[i].Name;
+            mainChart.Legends.Add(mainlegend);           
+            mainChart.ChartAreas.Add(mainArea);
+            //string idtext = this.Request.QueryString["ID"];
+            //var list2 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
+            var list3 = OptionManger.GetStaticByQuestionID(question.ID);
+            // string[] XPointMember = new string[list3.Count];
+            //  int[] YPointMember = new int[list3.Count];
+            //Series ser = new Series(question.Name);
+            //ser.Name = question.Name;
             //  ser.ChartArea = "ChartArea1";
             //  mainSeries.ChartType = SeriesChartType.Pie;
+            mainChart.Width = 770;
+            mainChart.Height = 400;
             mainChart.Series["MainSeries"].ChartType = SeriesChartType.Pie;
             //  mainChart.Legends["MainLengend"].
             mainChart.Legends["MainLengend"].CellColumns.Add(legendCellColumn1);
@@ -84,7 +88,8 @@ namespace QuestionnaireSystem
             mainChart.Legends["MainLengend"].CellColumns[1].ColumnType = LegendCellColumnType.Text;
             mainChart.Legends["MainLengend"].CellColumns[1].Text = "#VALX-#VALY";
             // mainChart.Series.Add(ser);
-
+            mainChart.ChartAreas["MainArea"].Area3DStyle.Enable3D = true;
+            mainChart.ChartAreas["MainArea"].AxisX.Interval = 1;
             for (int count = 0; count < list3.Count; count++)
             {
                 ////storing Values for X axis  
@@ -104,10 +109,17 @@ namespace QuestionnaireSystem
             //mainChart.Series[$"{list2[i].Name}"].XValueMember = "QuestionOption";
             //mainChart.Series[$"{list2[i].Name}"].YValueMembers = "Sum";
             //mainChart.DataBind();
-            
-            mainArea = new ChartArea("MainArea");
-            mainChart.ChartAreas.Add(mainArea);
-            mainChart.Series["MainSeries"].Label = "#PERCENT{P2}";
+            Random rnd = new Random();
+            foreach (DataPoint point in mainChart.Series["MainSeries"].Points)
+            {
+
+                //pie 顏色
+
+                point.Color = Color.FromArgb(150, rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+
+            }
+ 
+             mainChart.Series["MainSeries"].Label = "#PERCENT{P2}";
 
             panelChartHolder.Controls.Add(mainChart);           
             // PlaceHolder1.Controls.Add(mainChart);

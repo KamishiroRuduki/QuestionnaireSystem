@@ -17,19 +17,36 @@ namespace QuestionnaireSystem
             if (!IsPostBack)
             {
                 Session.Abandon(); //只要到list頁就先清空session
-                var list = QuestionnaireManger.GetQuestionnaireList();
-                if (list.Count > 0)
-                {
-                    this.QuestionnaireView.DataSource = list;
-                    this.QuestionnaireView.DataBind();
-                }
+                //var list = QuestionnaireManger.GetQuestionnaireList();
+                //if (list.Count > 0)
+                //{
+                //    this.QuestionnaireView.DataSource = list;
+                //    this.QuestionnaireView.DataBind();
+                //}
+                QuestionnaireView_DataBind();
+            }
+        }
+
+        private void QuestionnaireView_DataBind()
+        {
+            var list = QuestionnaireManger.GetQuestionnaireList();
+            if (list.Count > 0)
+            {
+                this.QuestionnaireView.DataSource = list;
+                this.QuestionnaireView.DataBind();
             }
         }
 
         protected void QuestionnaireView_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             QuestionnaireView.PageIndex = e.NewPageIndex;
-            this.QuestionnaireView.DataBind();
+            //var list = QuestionnaireManger.GetQuestionnaireList();
+            //if (list.Count > 0)
+            //{
+            //    this.QuestionnaireView.DataSource = list;
+            //    this.QuestionnaireView.DataBind();
+            //}
+            QuestionnaireView_DataBind();
         }
 
         protected void QuestionnaireView_RowDataBound(object sender, GridViewRowEventArgs e)

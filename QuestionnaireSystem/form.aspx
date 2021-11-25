@@ -39,7 +39,7 @@
                 success: function (result) {
                     for (var i = 0; i < result.length; i++) {
                         var obj = result[i];
-                        var htmltext = `<div"><br/><p>${i + 1}.${obj.Name}`;//第幾題跟題目名
+                        var htmltext = `<div><br/><p>${i + 1}.${obj.Name}`;//第幾題跟題目名
 
                         if (obj.IsMust) {
                             htmltext += `(必填)</p>`;
@@ -60,16 +60,17 @@
                             //同一個問題裡選項的check box的name要相同
                         }
                         else if (obj.Type == 2){
-                            htmltext += `<input type="Text" ID="${i}" name="${obj.ID}" />`; //文字方塊
+                          //  htmltext += `<input type="Text" ID="${i}" name="${obj.ID}" />`; //文字方塊
+                            htmltext += `<input type="Text" ID="${i}" name="${obj.ID}" onkeyup="this.value=this.value.replace(/[%&',;=?$\]/g,'')" />`;
                         }
                         else if (obj.Type == 3) {
-                            htmltext += `<input type="number" ID="${i}" name="${obj.ID}" />`; //文字方塊(數字)
+                            htmltext += `<input type="number" ID="${i}" name="${obj.ID}" onkeyup="this.value=this.value.replace(/[%&',;=?$\]/g,'')" />`; //文字方塊(數字)
                         }
                         else if (obj.Type == 4) {
-                            htmltext += `<input type="email" ID="${i}" name="${obj.ID}" />`; //文字方塊(mail)
+                            htmltext += `<input type="email" ID="${i}" name="${obj.ID}" onkeyup="this.value=this.value.replace(/[%&',;=?$\]/g,'')" />`; //文字方塊(mail)
                         }
                         else if (obj.Type == 5) {
-                            htmltext += `<input type="date" ID="${i}" name="${obj.ID}" />`; //文字方塊(日期)
+                            htmltext += `<input type="date" ID="${i}" name="${obj.ID}" onkeyup="this.value=this.value.replace(/[%&',;=?$\]/g,'')" />`; //文字方塊(日期)
                         }
                         htmltext += `<br /></div >`;
                         $("#main").append(htmltext);//結束這一題的區塊，並放進建好的div內
@@ -105,8 +106,8 @@
                                     for (var j = 0; j < optionarr.length; j++) {
                                         //  $("input:checkbox:[value=" + optionarr[j] + "]").attr("checked", 'checked');
                                         //$("input:checkbox[value=" + optionarr[j] + "]").prop("checked", true);
-                                        // $("input[name=" + obj.ID + "][value=" + optionarr[j] + "]").attr("checked", true);
-                                        $("#" + optionarr[j]).prop("checked", true); // 用ID去找到符合答案的選項並勾選(建立check box時我有把答案的值放到ID，所以可以這樣找)
+                                        $("input[name=" + obj.ID + "][value=" + optionarr[j] + "]").prop("checked", true);//用問題ID找到check box，再把value符合的選項勾選
+                                        //$("#" + optionarr[j]).prop("checked", true); // 用ID去找到符合答案的選項並勾選(建立check box時我有把答案的值放到ID，所以可以這樣找)
 
                                     }
                                 }

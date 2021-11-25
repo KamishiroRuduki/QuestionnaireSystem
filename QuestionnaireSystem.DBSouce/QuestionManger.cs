@@ -122,7 +122,7 @@ namespace QuestionnaireSystem.DBSouce
         /// </summary>
         /// <param name="questionnaireid"></param>
         /// <param name="id"></param>
-        public static void DelQuestion(Guid questionnaireid, int id)//找到那張問卷的第幾個問題
+        public static void DelQuestion(Guid questionnaireid, Guid questionid)//找到那張問卷的第幾個問題
         {
             try
             {
@@ -130,7 +130,7 @@ namespace QuestionnaireSystem.DBSouce
                 {
                     var query =
                         (from item in context.Questions
-                         where item.Number == id && item.QuestionnaireID == questionnaireid
+                         where item.ID == questionid && item.QuestionnaireID == questionnaireid
                          select item);
 
                     var list = query.FirstOrDefault();

@@ -213,5 +213,31 @@ namespace QuestionnaireSystem.DBSouce
                 return false;
             }
         }
+
+        //public static void DelPerson(Guid questionnaireid, Guid questionid)//找到那張問卷的第幾個問題
+        //{
+        //    try
+        //    {
+        //        using (ContextModel context = new ContextModel())
+        //        {
+        //            var query =
+        //                (from item in context.Questions
+        //                 where item.ID == questionid && item.QuestionnaireID == questionnaireid
+        //                 select item);
+
+        //            var list = query.FirstOrDefault();
+        //            if (list != null)
+        //            {
+        //                list.IsDel = true;
+        //            }
+        //            context.SaveChanges();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.WriteLog(ex);
+
+        //    }
+        //}
     }
 }

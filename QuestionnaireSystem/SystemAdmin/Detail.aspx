@@ -114,7 +114,7 @@
             <asp:Button ID="btnCanceltab2" runat="server" Text="取消" OnClick="btnCanceltab2_Click" /><asp:Button ID="btnSubmittab2" runat="server" Text="送出" OnClick="btnSubmittab2_Click" />
         </div>
         <div id="tabs-3">
-            <button type="button" id="btnDL" >匯出</button>
+            <button type="button" id="btnDL" >匯出</button><br/>
             <asp:GridView ID="PersonView" runat="server" AutoGenerateColumns="False" AllowPaging="True" OnPageIndexChanging="PersonView_PageIndexChanging" CellPadding="10">
                 <Columns>
                     <asp:BoundField DataField="Name" HeaderText="姓名" />

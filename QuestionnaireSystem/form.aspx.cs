@@ -18,11 +18,17 @@ namespace QuestionnaireSystem
             {
                 if (this.Request.QueryString["ID"] != null)
                 {
+
                     string idtext = this.Request.QueryString["ID"];
                     var list = QuestionnaireManger.GETQuestionnaire(idtext.ToGuid());
                     var list2 = QuestionManger.GetQuestionsListByQuestionnaireID(idtext.ToGuid());
                     this.HFID.Value = idtext;
-                   // HttpContext.Current.Session["Answer"] = idtext;
+                    if (list.State == 0)
+                    {
+                        Response.Redirect("/list.aspx");
+                        return;
+                    }
+                    // HttpContext.Current.Session["Answer"] = idtext;
                     if (list != null)
                     {
                         if (list.StartTime != null)
